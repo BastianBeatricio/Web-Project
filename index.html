@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web03</title>
+    <link rel="stylesheet" href="mystyle.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <!-- Ganti SVG dengan gambar Logo Pribadi.png -->
+                <img src="Logo Pribadi.png" alt="Logo" style="width:60px; height:60px; object-fit:contain; border-radius:50%;">
+            </div>
+            <div class="nav">
+                <div>Home</div>
+                <div>Services</div>
+                <div>About</div>
+                <div>Contact</div>
+            </div>
+        </div>
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-content">
+                Hero (Image, Slogan, Kontak, dll)
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="section services-section">
+            <div class="section-title">Services</div>
+            <div class="services-list">
+                <div class="service">
+                    <div class="service-heading">Heading</div>
+                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
+                </div>
+                <div class="service">
+                    <div class="service-heading">Heading</div>
+                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
+                </div>
+                <div class="service">
+                    <div class="service-heading">Heading</div>
+                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About -->
+        <div class="section about-section">
+            <div class="section-title"><img src="about2.png" alt="Info" style="height: 24px; vertical-align:middle; margin-right:8px;"> About</div>
+            <div class="about-desc">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            </div>
+            <div class="about-content">
+                <div class="about-left">
+                    <div class="about-heading">Heading</div>
+                    <div class="about-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </div>
+                </div>
+                <div class="about-right">
+                    <div class="about-heading">Performance</div>
+                    <div class="about-performance">
+                        <div class="performance-shape">
+                            <svg width="352" height="102" viewBox="-1 -1 352 102" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M 0 25 C 75 -25, 275 75, 350 25 L 350 75 C 275 125, 75 25, 0 75 Z" fill="white"
+                                    stroke="black" stroke-width="1" />
+                                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif">
+                                </text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="section contact-section">
+            <div class="section-title">Contact</div>
+            <form class="contact-form">
+                <div class="form-row">
+                    <input type="text" placeholder="Your Name Here">
+                    <input type="text" placeholder="Your Email Here @">
+                </div>
+                <div class="form-row">
+                    <textarea rows="3" placeholder="Your Message Here"></textarea>
+                </div>
+                <div class="form-row">
+                    <button type="submit">Kirim</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Footer
+        </div>
+    </div>
+    <script>
+    document.querySelector('.contact-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Mengosongkan input dan textarea setelah submit
+        this.reset();
+    });
+    </script>
+</body>
+</html>
+
