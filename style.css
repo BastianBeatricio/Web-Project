@@ -1,3 +1,4 @@
+/* CSS Variables */
 :root {
     --primary-blue: #1e3a8a;
     --dark-blue: #1e293b;
@@ -16,6 +17,7 @@
     --gradient-accent: linear-gradient(135deg, #f59e0b, #fbbf24);
 }
 
+/* General Styles */
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +26,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 100px; 
+    scroll-padding-top: 100px;
 }
 
 body {
@@ -51,7 +53,7 @@ body {
     position: absolute;
     width: 200%;
     height: 200%;
-    background: 
+    background:
         radial-gradient(circle at 20% 50%, rgba(30, 58, 138, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
@@ -127,7 +129,7 @@ body {
     right: 0;
     bottom: 0;
     background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    z-index: 1; 
+    z-index: 1;
 }
 
 .hero::after {
@@ -336,7 +338,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Pushes footer to the bottom */
     margin-top: auto;
 }
 
@@ -361,6 +362,12 @@ body {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+#form-status {
+    margin-top: 1.5rem;
+    font-weight: 500;
+}
+
+/* Buttons */
 .btn-primary {
     background: var(--gradient-primary);
     border: none;
@@ -376,6 +383,7 @@ body {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
     background: var(--gradient-primary);
+    color: white;
 }
 
 .btn-accent {
@@ -414,6 +422,30 @@ body {
     background: var(--gradient-accent);
 }
 
+.footer p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.footer .social-icons a {
+    color: white;
+    font-size: 1.2rem;
+    margin: 0 0.75rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer .social-icons a:hover {
+    background: var(--accent-blue);
+    transform: translateY(-5px);
+    color: white;
+}
+
 /* Skills and Technologies */
 .skill-item {
     display: flex;
@@ -440,20 +472,16 @@ body {
     .hero-content h1 {
         font-size: 3rem;
     }
-    
     .section-title {
         font-size: 2.5rem;
     }
-
     .project-image {
         height: 150px;
         font-size: 2rem;
     }
-
     .project-content {
         padding: 1.5rem;
     }
-
     .profile-image {
         width: 200px;
         height: 200px;
