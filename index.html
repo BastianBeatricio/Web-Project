@@ -2,110 +2,284 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Web03</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bastian Beatricio Arjuna Putra - Portfolio</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="animated-bg"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <!-- Ganti SVG dengan gambar Logo Pribadi.png -->
-                <img src="Logo Pribadi.png" alt="Logo" style="width:60px; height:60px; object-fit:contain; border-radius:50%;">
-            </div>
-            <div class="nav">
-                <div>Home</div>
-                <div>Services</div>
-                <div>About</div>
-                <div>Contact</div>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-cogs me-2"></i>BEATRICIO.ID
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--primary-blue);"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <!-- Hero -->
-        <div class="hero">
-            <div class="hero-content">
-                Hero (Image, Slogan, Kontak, dll)
-            </div>
-        </div>
-
-        <!-- Services -->
-        <div class="section services-section">
-            <div class="section-title">Services</div>
-            <div class="services-list">
-                <div class="service">
-                    <div class="service-heading">Heading</div>
-                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
-                </div>
-                <div class="service">
-                    <div class="service-heading">Heading</div>
-                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
-                </div>
-                <div class="service">
-                    <div class="service-heading">Heading</div>
-                    <div class="service-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- About -->
-        <div class="section about-section">
-            <div class="section-title"><img src="about2.png" alt="Info" style="height: 24px; vertical-align:middle; margin-right:8px;"> About</div>
-            <div class="about-desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            </div>
-            <div class="about-content">
-                <div class="about-left">
-                    <div class="about-heading">Heading</div>
-                    <div class="about-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </div>
-                </div>
-                <div class="about-right">
-                    <div class="about-heading">Performance</div>
-                    <div class="about-performance">
-                        <div class="performance-shape">
-                            <svg width="352" height="102" viewBox="-1 -1 352 102" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M 0 25 C 75 -25, 275 75, 350 25 L 350 75 C 275 125, 75 25, 0 75 Z" fill="white"
-                                    stroke="black" stroke-width="1" />
-                                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif">
-                                </text>
-                            </svg>
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="hero-content">
+                        <h1>BASTIAN BEATRICIO</h1>
+                        <p class="hero-subtitle">Mechatronics Engineering Student</p>
+                        <p class="hero-description">
+                            Politeknik ATMI Surakarta | Innovating at the intersection of mechanical, electrical, and software engineering
+                        </p>
+                        <div class="mt-4">
+                            <a href="#about" class="btn btn-accent btn-lg">
+                                <i class="fas fa-rocket me-2"></i>Explore My Work
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Contact -->
-        <div class="section contact-section">
-            <div class="section-title">Contact</div>
-            <form class="contact-form">
-                <div class="form-row">
-                    <input type="text" placeholder="Your Name Here">
-                    <input type="text" placeholder="Your Email Here @">
+    <section id="about" class="section about-section">
+        <div class="container">
+            <h2 class="section-title">ABOUT ME</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                    <img src="Profil.png" alt="Profile Photo" class="profile-image d-flex align-items-center justify-content-center" />
                 </div>
-                <div class="form-row">
-                    <textarea rows="3" placeholder="Your Message Here"></textarea>
+                <div class="col-lg-8">
+                    <div class="futuristic-card">
+                        <h3 class="mb-4 text-gradient">Future Mechatronics Engineer</h3>
+                        <p class="mb-3" style="font-size: 1.1rem; line-height: 1.7;">
+                            Halo! Saya Bastian Beatricio Arjuna Putra, lahir di Surabaya pada 7 September 2005.
+                             Saat ini tinggal di Desa Begajah Rt03/Rw04, Begajah, Sukoharjo, Jawa Tengah.
+                        </p>
+                        <p class="mb-4" style="font-size: 1.1rem; line-height: 1.7;">
+                            
+                            Saya seorang mahasiswa Teknik Mekatronika di Politeknik ATMI Surakarta yang penuh semangat, 
+                            menggabungkan desain mekanik, sistem kelistrikan, 
+                            dan solusi perangkat lunak cerdas untuk menciptakan teknologi otomasi inovatif untuk Industri 4.0 dan seterusnya..
+                        </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 style="color: var(--primary-blue); font-weight: 700;">Core Skills</h5>
+                                <div class="skill-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Mechanical Design & CAD</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>Embedded Systems</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-robot"></i>
+                                    <span>Robotics & Automation</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>Control Systems</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 style="color: var(--primary-blue); font-weight: 700;">Technologies</h5>
+                                <div class="skill-item">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python, C++, C+, and C#</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>Arduino & Raspberry Pi</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-cube"></i>
+                                    <span>SolidWorks & AutoCAD</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-wifi"></i>
+                                    <span>IoT & Industry 4.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-row">
-                    <button type="submit">Kirim</button>
-                </div>
-            </form>
+            </div>
         </div>
+    </section>
 
-        <!-- Footer -->
-        <div class="footer">
-            Footer
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <h2 class="section-title">MY PROJECTS</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-robot icon-bounce"></i>
+                        </div>
+                        <div class="project-content">
+                            <h4>Robot Industri</h4>
+                            <p>
+                                Penggunaan robot di bidang industri semakin meningkat, 
+                                terutama dalam otomatisasi proses produksi. Menggunakan robot sebagai metode pelatian yang advance. 
+                                Menggunakan sotware yang mampu mengontrol robot dari jarak jauh.
+                            <div class="project-footer">
+                                <small class="text-muted">
+                                    <i class="fas fa-tag me-1"></i>
+                                    Robotics • Software • Control Systems
+                                </small>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-computer icon-bounce"></i>
+                        </div>
+                        <div class="project-content">
+                            <h4>Mikrokontroler</h4>
+                            <p>
+                                Pengembangan tekntologi mikrokontroler untuk berbagai aplikasi, 
+                                mulai dari sistem kendali sederhana hingga sistem kompleks yang terintegrasi. berbasis IoT
+                                dan menggunakan bahasa pemrograman C/C++ bahkan C#.
+                            </p>
+                            <div class="project-footer">
+                                <small class="text-muted">
+                                    <i class="fas fa-tag me-1"></i>
+                                    IoT • Programming • Microcontroller
+                                </small>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-bolt icon-bounce"></i>
+                        </div>
+                        <div class="project-content">
+                            <h4>Elektronika</h4>
+                            <p>
+                                Pendalaman dunia Elektronika didasari dari rangkaian sederhana sampai ke rangkaian kompleks, 
+                                mencakup troubleshoot pada rangkaian. Dapat berfungsi sebagai kontrol seebuah sistem.
+                            </p>
+                            <div class="project-footer">
+                                <small class="text-muted">
+                                    <i class="fas fa-tag me-1"></i>
+                                    Electric • Energy • Control Systems
+                                </small>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <script>
-    document.querySelector('.contact-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Mengosongkan input dan textarea setelah submit
-        this.reset();
-    });
-    </script>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">GET IN TOUCH</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="futuristic-card">
+                        <form id="contactForm" action="https://formspree.io/f/xzzvoqpn" method="POST">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Name</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Subject</label>
+                                <input type="text" name="subject" class="form-control" placeholder="Message Subject" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Message</label>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Your message here..." required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-accent btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="futuristic-card text-center h-100">
+                                <i class="card-icon fas fa-envelope"></i>
+                                <h5 style="color: var(--primary-blue); font-weight: 700;">Email</h5>
+                                <p class="text-muted mb-0">bastian.20236005@student.atmi.ac.id</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="futuristic-card text-center h-100">
+                                <i class="card-icon fas fa-phone"></i>
+                                <h5 style="color: var(--primary-blue); font-weight: 700;">Phone</h5>
+                                <p class="text-muted mb-0">+62 895-0270-2918</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="futuristic-card text-center h-100">
+                                <i class="card-icon fas fa-map-marker-alt"></i>
+                                <h5 style="color: var(--primary-blue); font-weight: 700;">Location</h5>
+                                <p class="text-muted mb-0">Surakarta, Central Java</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h5 class="text-gradient mb-3">Let's Build the Future Together</h5>
+                    <p class="mb-4">&copy; 2025 Bastian Beatricio Arjuna Putra. All rights reserved.</p>
+                    <div class="mt-3">
+                        <a href="https://github.com/BastianBeatricio" target="_blank" class="text-warning me-4 fs-3"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-warning me-4 fs-3"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/bastian_beatricio/" target="_blank" class="text-warning me-4 fs-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-warning fs-3"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
-
