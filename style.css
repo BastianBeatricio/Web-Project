@@ -1,4 +1,3 @@
-/* CSS Variables */
 :root {
     --primary-blue: #1e3a8a;
     --dark-blue: #1e293b;
@@ -17,7 +16,6 @@
     --gradient-accent: linear-gradient(135deg, #f59e0b, #fbbf24);
 }
 
-/* General Styles */
 * {
     margin: 0;
     padding: 0;
@@ -37,7 +35,6 @@ body {
     line-height: 1.6;
 }
 
-/* Animated Background */
 .animated-bg {
     position: fixed;
     top: 0;
@@ -66,7 +63,6 @@ body {
     66% { transform: translate(-50%, -50%) rotate(240deg); }
 }
 
-/* Navbar */
 .navbar {
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(20px);
@@ -111,7 +107,6 @@ body {
     width: 100%;
 }
 
-/* Hero Section */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -178,7 +173,6 @@ body {
     font-weight: 400;
 }
 
-/* Cards */
 .futuristic-card {
     background: var(--card-bg);
     border: 2px solid var(--border-color);
@@ -222,7 +216,6 @@ body {
     filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
 }
 
-/* Sections */
 .section {
     padding: 6rem 0;
     position: relative;
@@ -249,7 +242,6 @@ body {
     border-radius: 2px;
 }
 
-/* About Section */
 .about-section {
     background: linear-gradient(135deg, rgba(30, 58, 138, 0.03), rgba(59, 130, 246, 0.05));
 }
@@ -266,7 +258,6 @@ body {
     background: var(--gradient-primary);
 }
 
-/* Projects Section */
 .projects-section {
     background: white;
 }
@@ -341,7 +332,6 @@ body {
     margin-top: auto;
 }
 
-/* Contact Section */
 .contact-section {
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(245, 158, 11, 0.08));
 }
@@ -367,7 +357,6 @@ body {
     font-weight: 500;
 }
 
-/* Buttons */
 .btn-primary {
     background: var(--gradient-primary);
     border: none;
@@ -403,7 +392,6 @@ body {
     color: var(--text-primary);
 }
 
-/* Footer */
 .footer {
     background: var(--dark-blue);
     color: white;
@@ -446,7 +434,6 @@ body {
     color: white;
 }
 
-/* Skills and Technologies */
 .skill-item {
     display: flex;
     align-items: center;
@@ -467,7 +454,6 @@ body {
     margin-right: 12px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 3rem;
@@ -488,7 +474,6 @@ body {
     }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -506,7 +491,6 @@ body {
     background: var(--primary-blue);
 }
 
-/* Additional effects */
 .text-gradient {
     background: var(--gradient-accent);
     -webkit-background-clip: text;
