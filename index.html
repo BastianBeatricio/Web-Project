@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bastian Beatricio Arjuna Putra - Portfolio</title>
     
-    
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -66,7 +65,6 @@
                         <p class="mb-3" style="font-size: 1.1rem; line-height: 1.7;">
                             Halo! Saya Bastian Beatricio Arjuna Putra, selamat datang di portfolio saya.
                             Saya harap Anda menemukan inspirasi dan inovasi di sini. Saya percaya bahwa teknologi dapat mengubah dunia, dan saya berkomitmen untuk menjadi bagian dari perubahan itu.
-
                         </p>
                         <p class="mb-4" style="font-size: 1.1rem; line-height: 1.7;">
                             Saya seorang mahasiswa Teknik Mekatronika di Politeknik ATMI Surakarta yang penuh semangat, menggabungkan desain mekanik, sistem kelistrikan, dan solusi perangkat lunak cerdas untuk menciptakan teknologi otomasi inovatif untuk Industri 4.0 dan seterusnya.
@@ -216,7 +214,7 @@
                         <a href="https://www.instagram.com/bastian_beatricio/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.tiktok.com/@bastian_beatricio" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                     </div>
-                     <p class="mb-0">&copy; 2025 Bastian Beatricio Arjuna Putra. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2025 Bastian Beatricio Arjuna Putra. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -232,7 +230,7 @@
             function success() {
                 form.reset();
                 status.innerHTML = "Thanks! Your message has been sent.";
-                status.className = 'alert alert-success mt-3'; 
+                status.className = 'alert alert-success mt-3';  
             }
 
             function error() {
@@ -241,7 +239,7 @@
             }
 
             form.addEventListener("submit", function (ev) {
-                ev.preventDefault(); 
+                ev.preventDefault();  
                 var data = new FormData(form);
                 ajax(form.method, form.action, data, success, error);
             });

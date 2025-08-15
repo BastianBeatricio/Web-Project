@@ -454,6 +454,61 @@ body {
     margin-right: 12px;
 }
 
+/* ========================================================= */
+/* BAGIAN RESPONSIVE BARU DAN PERBAIKAN EMAIL */
+/* ========================================================= */
+
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.section-title {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+}
+
+.hero-description {
+    font-size: 1rem;
+}
+
+.about-section .row {
+    flex-direction: column;
+}
+
+.about-section .col-lg-4, .about-section .col-lg-8 {
+    width: 100%;
+}
+
+.profile-image {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 1.5rem;
+}
+
+.contact-section .row.g-4 > [class*="col-"] {
+    margin-bottom: 1rem;
+}
+
+.form-control, .btn-accent {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.futuristic-card p {
+    /* Menambahkan aturan ini untuk memastikan teks email turun baris dengan baik */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+}
+
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 3rem;
@@ -473,6 +528,27 @@ body {
         height: 200px;
     }
 }
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    .hero-subtitle, .hero-description {
+        font-size: 0.9rem;
+    }
+    .futuristic-card {
+        padding: 1.5rem;
+    }
+    .futuristic-card .text-muted {
+        font-size: 0.9rem;
+    }
+}
+/* ========================================================= */
+/* AKHIR BAGIAN RESPONSIVE */
+/* ========================================================= */
 
 ::-webkit-scrollbar {
     width: 8px;
