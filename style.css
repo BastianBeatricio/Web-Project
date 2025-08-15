@@ -480,14 +480,6 @@ body {
     font-size: 1rem;
 }
 
-.about-section .row {
-    flex-direction: column;
-}
-
-.about-section .col-lg-4, .about-section .col-lg-8 {
-    width: 100%;
-}
-
 .profile-image {
     width: 180px;
     height: 180px;
@@ -507,6 +499,13 @@ body {
     /* Menambahkan aturan ini untuk memastikan teks email turun baris dengan baik */
     word-wrap: break-word; 
     overflow-wrap: break-word;
+}
+
+@media (max-width: 992px) {
+    .about-section .text-center {
+        /* Memastikan gambar tetap di tengah pada layar medium */
+        margin-bottom: 2rem;
+    }
 }
 
 @media (max-width: 768px) {
