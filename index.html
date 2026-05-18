@@ -1,490 +1,446 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bastian Beatricio Arjuna Putra - Portfolio</title>
+    <title>LH44 | Ultimate Era Databank</title>
     
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* TRANSISI GLOBAL */
+        * { transition: background-color 0.8s ease, border-color 0.8s ease, color 0.5s ease, text-shadow 0.5s ease; }
+
+        /* TEMA: MERCEDES (DEFAULT) */
+        :root {
+            --bg-dark: #050608;
+            --primary: #00A19C; 
+            --primary-glow: rgba(0, 161, 156, 0.6);
+            --panel-bg: rgba(10, 12, 15, 0.7);
+        }
+
+        /* TEMA: FERRARI */
+        [data-theme="ferrari"] {
+            --primary: #FF2800; 
+            --primary-glow: rgba(255, 40, 0, 0.6);
+            --panel-bg: rgba(20, 5, 5, 0.7);
+        }
+
+        /* TEMA: MCLAREN */
+        [data-theme="mclaren"] {
+            --primary: #FF8700; 
+            --primary-glow: rgba(255, 135, 0, 0.6);
+            --panel-bg: rgba(25, 12, 5, 0.7);
+        }
+
+        body {
+            background-color: var(--bg-dark); color: #fff;
+            font-family: 'Rajdhani', sans-serif; overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .title-display { font-family: 'Syncopate', sans-serif; text-transform: uppercase; }
+
+        /* SCANLINE OVERLAY */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 999; opacity: 0.3;
+        }
+
+        /* NAVBAR */
+        .navbar { background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-bottom: 2px solid var(--primary); }
+        .nav-link { color: #fff !important; font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 1px; }
+        .nav-link:hover { color: var(--primary) !important; text-shadow: 0 0 10px var(--primary); }
+        
+        .era-btn {
+            background: rgba(0,0,0,0.5); border: 1px solid var(--primary); color: var(--primary);
+            padding: 8px 20px; font-family: 'Syncopate', sans-serif; font-size: 0.75rem; font-weight: bold;
+            cursor: pointer; position: relative; overflow: hidden; letter-spacing: 2px;
+        }
+        .era-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary-glow); }
+
+        /* HERO & BACKGROUND */
+        #dynamic-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            z-index: -2; transition: background-image 1s ease-in-out;
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%); z-index: -1;
+        }
+
+        .hero { height: 100vh; display: flex; align-items: center; position: relative; padding-top: 80px; }
+        .hero-title {
+            font-size: 5vw; font-weight: 700; color: transparent;
+            -webkit-text-stroke: 2px var(--primary); text-shadow: 0 0 30px var(--primary-glow); line-height: 1.1;
+        }
+        .hero-subtitle { font-size: 1.5rem; letter-spacing: 5px; color: #ccc; font-weight: bold; }
+
+        /* GLASS PANELS UMUM */
+        .glass-box {
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05); padding: 30px;
+            border-radius: 8px; border-bottom: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* LOGO IMAGE STYLING */
+        .team-logo-img {
+            max-width: 100%; max-height: 250px; object-fit: contain;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+            transition: all 0.8s ease;
+        }
+
+        /* THE CHRONICLES (ABOUT) */
+        .story-panel { border-left: 4px solid var(--primary); padding-left: 30px; margin-top: 30px; }
+        .story-text { font-size: 1.2rem; color: #bbb; line-height: 1.8; }
+
+        /* TELEMETRY */
+        .data-val { font-size: 3rem; color: var(--primary); font-family: 'Syncopate', sans-serif; text-shadow: 0 0 10px var(--primary-glow); }
+
+        /* HALL OF FAME (3D TILT CARDS) */
+        .tilt-card-wrapper { perspective: 1000px; }
+        .tilt-card {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.05);
+            border-top: 3px solid var(--primary); padding: 40px 30px; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border-radius: 12px; transform-style: preserve-3d; transition: transform 0.1s;
+        }
+        .tilt-card * { transform: translateZ(50px); text-align: center; }
+        .tilt-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--primary-glow)); }
+
+        /* CONTACT FORM */
+        .form-control { background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; font-family: 'Syncopate'; }
+        .form-control:focus { background: rgba(0,0,0,0.9); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); color: #fff; }
+    </style>
 </head>
 <body>
-    <div class="animated-bg"></div>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#home">
-                <i class="fas fa-cogs me-2"></i>BEATRICIO.ID
+    <div class="scanlines"></div>
+    <div id="dynamic-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container px-4">
+            <a class="navbar-brand text-white title-display" href="#home">
+                <span style="color: var(--primary);">LH</span>44
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars" style="color: var(--primary-blue);"></i>
+                <i class="fas fa-bars" style="color: var(--primary);"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">THE CHRONICLES</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#telemetry">TELEMETRY</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#halloffame">HALL OF FAME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">UPLINK</a></li>
                 </ul>
+                <button class="era-btn mt-3 mt-lg-0" onclick="cycleEra()" id="era-btn-text">
+                    [ MERCEDES ERA ]
+                </button>
             </div>
         </div>
     </nav>
 
     <section id="home" class="hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8 mx-auto text-center">
-                    <div class="hero-content">
-                        <h1>BASTIAN BEATRICIO</h1>
-                        <p class="hero-subtitle">Mechatronics Engineering Student</p>
-                        <p class="hero-description">
-                            Politeknik ATMI Surakarta | Innovating at the intersection of mechanical, electrical, and software engineering.
-                        </p>
-                        <div class="mt-4">
-                            <a href="#about" class="btn btn-accent btn-lg nav-link-scroll">
-                                <i class="fas fa-rocket me-2"></i>Explore My Work
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section about-section">
-        <div class="container">
-            <h2 class="section-title">ABOUT ME</h2>
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-4 text-center">
-                    <img src="Profil.png" alt="Profile Photo" class="profile-image">
-                </div>
-                <div class="col-lg-8">
-                    <div class="futuristic-card">
-                        <h3 class="mb-4 text-gradient">Future Mechatronics Engineer</h3>
-                        <p class="mb-3" style="font-size: 1.1rem; line-height: 1.7;">
-                            Halo! Saya Bastian Beatricio Arjuna Putra, selamat datang di portfolio saya.
-                            Saya harap Anda menemukan inspirasi dan inovasi di sini. Saya percaya bahwa teknologi dapat mengubah dunia, dan saya berkomitmen untuk menjadi bagian dari perubahan itu.
-                        </p>
-                        <p class="mb-4" style="font-size: 1.1rem; line-height: 1.7;">
-                            Saya seorang mahasiswa Teknik Mekatronika di Politeknik ATMI Surakarta yang penuh semangat, menggabungkan desain mekanik, sistem kelistrikan, dan solusi perangkat lunak cerdas untuk menciptakan teknologi otomasi inovatif untuk Industri 4.0 dan seterusnya.
-                        </p>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h5 style="color: var(--primary-blue); font-weight: 700;">Core Skills</h5>
-                                <div class="skill-item"><i class="fas fa-cog"></i><span>Mechanical Design & CAD</span></div>
-                                <div class="skill-item"><i class="fas fa-microchip"></i><span>Embedded Systems</span></div>
-                                <div class="skill-item"><i class="fas fa-robot"></i><span>Robotics & Automation</span></div>
-                                <div class="skill-item"><i class="fas fa-bolt"></i><span>Control Systems</span></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <h5 style="color: var(--primary-blue); font-weight: 700;">Technologies</h5>
-                                <div class="skill-item"><i class="fab fa-python"></i><span>Python, C++, C#, and C</span></div>
-                                <div class="skill-item"><i class="fas fa-microchip"></i><span>Arduino & Raspberry Pi</span></div>
-                                <div class="skill-item"><i class="fas fa-cube"></i><span>SolidWorks & AutoCAD</span></div>
-                                <div class="skill-item"><i class="fas fa-wifi"></i><span>IoT & Industry 4.0</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row justify-content-center skills-proficiency-card">
-                <div class="col-lg-10">
-                    <h5 style="color: var(--primary-blue); font-weight: 700;" class="text-center mb-4">Skills & Projects Overview</h5>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="futuristic-card">
-                                <h6 style="color: var(--primary-blue); font-weight: 600;" class="text-center mb-3">Technical Skills Proficiency</h6>
-                                <canvas id="skillsChart"></canvas>
-                                <p class="text-center text-muted mt-2" style="font-size: 0.8rem;">
-                                    Chart rendered using <a href="https://www.chartjs.org/" target="_blank" rel="noopener noreferrer">Chart.js</a>.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="futuristic-card">
-                                <h6 style="color: var(--primary-blue); font-weight: 600;" class="text-center mb-3">Project Focus</h6>
-                                <canvas id="interestsChart"></canvas>
-                                <p class="text-center text-muted mt-2" style="font-size: 0.8rem;">
-                                    Chart rendered using <a href="https://www.chartjs.org/" target="_blank" rel="noopener noreferrer">Chart.js</a>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section projects-section">
-        <div class="container">
-            <h2 class="section-title">MY PROJECTS</h2>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
-                        <div class="project-image"><i class="fas fa-robot icon-bounce"></i></div>
-                        <div class="project-content">
-                            <h4>Robot Industri</h4>
-                            <p>Penggunaan robot di bidang industri semakin meningkat, terutama dalam otomatisasi proses produksi. Menggunakan robot sebagai metode pelatian yang advance. Menggunakan sotware yang mampu mengontrol robot dari jarak jauh.</p>
-                            <div class="project-footer">
-                                <small class="text-muted"><i class="fas fa-tag me-1"></i>Robotics • Software</small>
-                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
-                        <div class="project-image"><i class="fas fa-computer icon-bounce"></i></div>
-                        <div class="project-content">
-                            <h4>Mikrokontroler</h4>
-                            <p>Pengembangan teknologi mikrokontroler untuk berbagai aplikasi, mulai dari sistem kendali sederhana hingga sistem kompleks yang terintegrasi. berbasis IoT dan menggunakan bahasa pemrograman C/C++ bahkan C#.</p>
-                            <div class="project-footer">
-                                <small class="text-muted"><i class="fas fa-tag me-1"></i>IoT • Microcontroller</small>
-                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
-                        <div class="project-image"><i class="fas fa-bolt icon-bounce"></i></div>
-                        <div class="project-content">
-                            <h4>Elektronika</h4>
-                            <p>Pendalaman dunia Elektronika didasari dari rangkaian sederhana sampai ke rangkaian kompleks, mencakup troubleshoot pada rangkaian. Dapat berfungsi sebagai kontrol sebuah sistem.</p>
-                            <div class="project-footer">
-                                <small class="text-muted"><i class="fas fa-tag me-1"></i>Electric • Energy</small>
-                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section contact-section">
-        <div class="container">
-            <h2 class="section-title">CONTACT ME</h2>
+        <div class="container px-4 position-relative">
             <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="futuristic-card">
-                        <form id="contactForm" action="https://formspree.io/f/xzzvoqpn" method="POST">
+                <div class="col-lg-10" data-aos="fade-right" data-aos-duration="1500">
+                    <p class="hero-subtitle mb-2" id="hero-year">2013 - 2024</p>
+                    <h1 class="hero-title title-display" id="hero-headline">THE SILVER ARROW<br>DOMINANCE</h1>
+                    
+                    <div class="mt-5 d-flex flex-wrap gap-4 align-items-center">
+                        <div class="glass-box text-center p-3" style="min-width: 150px;">
+                            <p class="mb-0 text-muted" style="letter-spacing: 2px; font-size: 0.8rem;">WORLD TITLES</p>
+                            <span class="data-val" id="hero-stat-titles">6</span>
+                        </div>
+                        <div class="glass-box text-center p-3" style="min-width: 150px;">
+                            <p class="mb-0 text-muted" style="letter-spacing: 2px; font-size: 0.8rem;">ERA WINS</p>
+                            <span class="data-val" id="hero-stat-wins">82</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5" style="background: rgba(0,0,0,0.85); position: relative; z-index: 10;">
+        <div class="container py-5 px-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-5 mb-lg-0" data-aos="fade-up">
+                    <h5 style="color: var(--primary); letter-spacing: 3px;">DATABASE ARCHIVE</h5>
+                    <h2 class="title-display mb-4" id="about-title" style="font-size: 2.5rem;">A LEGACY FORGED IN BRACKLEY</h2>
+                    <div class="story-panel">
+                        <p class="story-text" id="about-text">
+                            Berpindah dari McLaren ke Mercedes pada 2013 dianggap sebagai pertaruhan terbesar dalam sejarah F1. Namun Hamilton membuktikan sebaliknya. Bersama pabrikan Jerman ini, ia mendominasi era V6 Turbo Hybrid, memecahkan rekor Michael Schumacher, dan mengubah nomor 44 menjadi simbol dominasi absolut.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center" data-aos="zoom-in">
+                    <div class="glass-box d-flex justify-content-center align-items-center" style="height: 350px; border-radius: 50%;">
+                        <img id="team-logo" src="logomercedes.png" alt="Team Logo" class="team-logo-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="telemetry" class="py-5" style="background: var(--bg-dark);">
+        <div class="container py-5 px-4">
+            <h2 class="text-center mb-5 title-display" style="color: var(--primary);" data-aos="fade-down">ACTIVE TELEMETRY</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="100">
+                    <div class="glass-box p-4">
+                        <p class="text-muted mb-1" style="letter-spacing: 2px;">VELOCITY</p>
+                        <span class="data-val" id="val-speed">0</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="200">
+                    <div class="glass-box p-4">
+                        <p class="text-muted mb-1" style="letter-spacing: 2px;">ENGINE RPM</p>
+                        <span class="data-val" id="val-rpm">0</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="300">
+                    <div class="glass-box p-4">
+                        <p class="text-muted mb-1" style="letter-spacing: 2px;">GEARBOX</p>
+                        <span class="data-val" id="val-gear">N</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="400">
+                    <div class="glass-box p-4">
+                        <p class="text-muted mb-1" style="letter-spacing: 2px;">G-FORCE</p>
+                        <span class="data-val" id="val-gforce">1.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="halloffame" class="py-5" style="background: rgba(0,0,0,0.7);">
+        <div class="container py-5 px-4">
+            <h2 class="text-center mb-5 title-display" style="color: var(--primary);" data-aos="fade-up">HALL OF FAME</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="tilt-card">
+                        <i id="card1-icon" class="fas fa-crown"></i>
+                        <h4 id="card1-title" class="title-display fs-5">7X CHAMPION</h4>
+                        <p id="card1-text" class="text-muted mt-3">Menyamai rekor abadi, mengukir era keemasan bersama dominasi Mercedes.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="tilt-card">
+                        <i id="card2-icon" class="fas fa-tachometer-alt"></i>
+                        <h4 id="card2-title" class="title-display fs-5">100+ VICTORIES</h4>
+                        <p id="card2-text" class="text-muted mt-3">Pembalap pertama dalam sejarah yang menembus tiga digit kemenangan.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="tilt-card">
+                        <i id="card3-icon" class="fas fa-hand-holding-heart"></i>
+                        <h4 id="card3-title" class="title-display fs-5">MISSION 44</h4>
+                        <p id="card3-text" class="text-muted mt-3">Mendirikan yayasan amal untuk mendukung keragaman dalam dunia motorsport.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5" style="background: var(--bg-dark); border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container py-5 px-4">
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="text-center mb-5 title-display" style="color: var(--primary);">SECURE UPLINK</h2>
+                    <div class="glass-box">
+                        <form onsubmit="event.preventDefault(); alert('Transmission Sent to LH44 Nexus.');">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Name</label>
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">CALLSIGN (NAME)</label>
+                                    <input type="text" class="form-control py-2" required>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Email</label>
-                                    <input type="email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">COMMS LINK (EMAIL)</label>
+                                    <input type="email" class="form-control py-2" required>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Subject</label>
-                                <input type="text" name="subject" class="form-control" placeholder="Message Subject" required>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Message</label>
-                                <textarea name="message" class="form-control" rows="5" placeholder="Your message here..." required></textarea>
+                                <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">ENCRYPTED DATA (MESSAGE)</label>
+                                <textarea class="form-control py-2" rows="5" required></textarea>
                             </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-accent btn-lg">
-                                    <i class="fas fa-paper-plane me-2"></i>Send Message
-                                </button>
-                            </div>
+                            <button type="submit" class="era-btn w-100 py-3 mt-2" style="font-size: 1rem;">
+                                TRANSMIT TO BASE
+                            </button>
                         </form>
-                        <div id="form-status"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-lg-12">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="futuristic-card text-center h-100">
-                                <i class="card-icon fas fa-envelope"></i>
-                                <h5 style="color: var(--primary-blue); font-weight: 700;">Email</h5>
-                                <p class="text-muted mb-0">bastian.20236005@student.atmi.ac.id</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="futuristic-card text-center h-100">
-                                <i class="card-icon fas fa-phone"></i>
-                                <h5 style="color: var(--primary-blue); font-weight: 700;">Phone</h5>
-                                <p class="text-muted mb-0">+62 895-0270-2918</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="futuristic-card text-center h-100">
-                                <i class="card-icon fas fa-map-marker-alt"></i>
-                                <h5 style="color: var(--primary-blue); font-weight: 700;">Location</h5>
-                                <p class="text-muted mb-0">Surakarta, Central Java</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h5 class="text-gradient mb-3">Let's Build the Future Together</h5>
-                    <div class="social-icons mb-4">
-                        <a href="https://github.com/BastianBeatricio" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="https://api.whatsapp.com/send/?phone=6289502702918&text&type=phone_number&app_absent=0" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/bastian_beatricio/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@bastian_beatricio" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                    </div>
-                    <p class="mb-0">&copy; 2025 Bastian Beatricio Arjuna Putra. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
+    <footer class="py-4 text-center" style="background: rgba(0,0,0,0.9); border-top: 1px solid var(--primary);">
+        <p class="mb-0 text-muted" style="font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 3px;">© 2026 LH44_NEXUS | DEVELOPED BY BASTIAN BEATRICIO</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        window.addEventListener("DOMContentLoaded", function () {
-            
-            // --- PART 1: CONTACT FORM SUBMISSION ---
-            const form = document.getElementById("contactForm");
-            const status = document.getElementById("form-status");
+        // 1. INIT ANIMASI (AOS)
+        AOS.init({ once: false, offset: 50 });
 
-            if (form) {
-                form.addEventListener("submit", function (ev) {
-                    ev.preventDefault();
-                    var data = new FormData(form);
-                    ajax(form.method, form.action, data, success, error);
-                });
-            }
-
-            function success() {
-                form.reset();
-                status.innerHTML = "Thanks! Your message has been sent.";
-                status.className = 'alert alert-success mt-3';
-            }
-
-            function error() {
-                status.innerHTML = "Oops! There was a problem sending your message.";
-                status.className = 'alert alert-danger mt-3';
-            }
-
-            function ajax(method, url, data, success, error) {
-                var xhr = new XMLHttpRequest();
-                xhr.open(method, url);
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-                    if (xhr.status === 200) {
-                        success(xhr.response, xhr.responseType);
-                    } else {
-                        error(xhr.status, xhr.response, xhr.responseType);
-                    }
-                };
-                xhr.send(data);
-            }
-
-            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-            const sections = document.querySelectorAll('section');
-            const navbar = document.querySelector('.navbar');
-
-            function smoothScroll(event) {
-                event.preventDefault();
-                const targetId = this.getAttribute("href");
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const navbarHeight = navbar.offsetHeight;
-                    window.scrollTo({
-                        top: targetElement.offsetTop - navbarHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', smoothScroll);
-            });
-            const heroButton = document.querySelector('.nav-link-scroll');
-            if(heroButton) {
-                heroButton.addEventListener('click', smoothScroll);
-            }
-
-            function updateActiveLink() {
-                let current = '';
-                const navbarHeight = navbar.offsetHeight;
-                const scrollPos = window.scrollY + navbarHeight + 10;
+        // ========================================================
+        // 2. MASTER DATABANK (SEMUA DATA ERA ADA DI SINI)
+        // ========================================================
+        const eraData = [
+            {
+                id: 'mercedes', theme: null, 
+                btnText: '[ ERA: MERCEDES ]',
+                year: '2013 - 2024',
+                headline: 'THE SILVER ARROW<br>DOMINANCE',
+                statTitles: '6', statWins: '82',
                 
-                sections.forEach(section => {
-                    if (section.offsetTop <= scrollPos) {
-                        current = section.getAttribute('id');
-                    }
-                });
+                // DATA ABOUT
+                aboutTitle: 'A LEGACY FORGED IN BRACKLEY',
+                aboutText: 'Berpindah dari McLaren ke Mercedes pada 2013 adalah pertaruhan terbesar dalam sejarah F1. Bersama pabrikan Jerman ini, ia mendominasi era V6 Turbo Hybrid, memecahkan rekor Michael Schumacher, dan mengubah nomor 44 menjadi simbol dominasi absolut.',
                 
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-            }
+                // 📷 INPUT LOGO & BACKGROUND MERCEDES DI SINI
+                logoFile: 'logomercedes.png', 
+                bgFile: 'https://images.unsplash.com/photo-1541343672885-9be56236302a?q=80&w=1920',
 
-            window.addEventListener('scroll', updateActiveLink);
-            updateActiveLink(); 
+                // DATA HALL OF FAME (CARD 1, 2, 3)
+                c1Icon: 'fas fa-crown', c1Title: '7X CHAMPION', c1Text: 'Menyamai rekor abadi, mengukir era keemasan bersama dominasi mesin hybrid Mercedes.',
+                c2Icon: 'fas fa-tachometer-alt', c2Title: '100+ VICTORIES', c2Text: 'Pembalap pertama dalam sejarah manusia yang menembus tiga digit kemenangan grand prix.',
+                c3Icon: 'fas fa-hand-holding-heart', c3Title: 'MISSION 44', c3Text: 'Mendirikan yayasan amal untuk mendukung keragaman dan representasi inklusif di motorsport.'
+            },
+            {
+                id: 'ferrari', theme: 'ferrari', 
+                btnText: '[ ERA: FERRARI ]',
+                year: '2025 - PRESENT',
+                headline: 'MARANELLO\'S<br>ULTIMATE DREAM',
+                statTitles: '?', statWins: '?',
+                
+                aboutTitle: 'CHASING THE 8TH WORLD TITLE',
+                aboutText: 'Sebuah kepindahan abad ini. Bergabungnya Hamilton dengan Scuderia Ferrari bukan sekadar transfer, melainkan pertemuan dua entitas paling ikonis di motorsport. Mengenakan warna merah menyala, ia membawa misi besar: mengembalikan kejayaan Kuda Jingkrak.',
+                
+                // 📷 INPUT LOGO & BACKGROUND FERRARI DI SINI
+                logoFile: 'logoferrari.png', 
+                bgFile: 'https://images.unsplash.com/photo-1596468766107-1c4b7b2513f8?q=80&w=1920',
 
-            let skillsChart;
-            const skillsCtx = document.getElementById('skillsChart');
-            if (skillsCtx) {
-                skillsChart = new Chart(skillsCtx, {
-                    type: 'radar',
-                    data: {
-                        labels: [
-                            'Mechanical Design',
-                            'Embedded Systems',
-                            'Robotics',
-                            'Control Systems',
-                            'Programming',
-                            'IoT & Industry 4.0'
-                        ],
-                        datasets: [{
-                            label: 'Proficiency Level',
-                            data: [90, 85, 88, 82, 92, 80],
-                            backgroundColor: 'rgba(59, 130, 246, 0.4)', // Warna area bagan
-                            borderColor: 'rgba(30, 58, 138, 1)', // Warna garis bagan
-                            pointBackgroundColor: 'rgba(251, 191, 36, 1)', // Warna titik
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(251, 191, 36, 1)'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        animation: {
-                            duration: 1000,
-                            easing: 'easeInOutQuad'
-                        },
-                        scales: {
-                            r: {
-                                angleLines: {
-                                    color: 'rgba(30, 41, 59, 0.1)'
-                                },
-                                grid: {
-                                    color: 'rgba(30, 41, 59, 0.15)'
-                                },
-                                pointLabels: {
-                                    font: {
-                                        size: 14,
-                                        weight: 'bold'
-                                    },
-                                    color: '#1e293b'
-                                },
-                                ticks: {
-                                    backdropColor: 'rgba(248, 250, 252, 0.6)',
-                                    color: '#64748b',
-                                    stepSize: 20,
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                },
-                                suggestedMin: 0,
-                                suggestedMax: 100
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.r) {
-                                            label += context.parsed.r + '%';
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+                c1Icon: 'fas fa-horse-head', c1Title: 'THE RED SUIT', c1Text: 'Bergabung dengan tim paling bersejarah di grid Formula 1 untuk babak akhir karirnya.',
+                c2Icon: 'fas fa-trophy', c2Title: 'TARGET: 8TH TITLE', c2Text: 'Misi utama membawa kembali gelar juara dunia ke Maranello setelah lebih dari satu dekade.',
+                c3Icon: 'fas fa-users', c3Title: 'THE TIFOSI', c3Text: 'Mendapat dukungan dari basis penggemar balap paling fanatik di seluruh dunia.'
+            },
+            {
+                id: 'mclaren', theme: 'mclaren', 
+                btnText: '[ ERA: MCLAREN ]',
+                year: '2007 - 2012',
+                headline: 'THE WOKING<br>PRODIGY',
+                statTitles: '1', statWins: '21',
+                
+                aboutTitle: 'THE BIRTH OF A CHAMPION',
+                aboutText: 'Memulai debutnya di bawah asuhan Ron Dennis, Hamilton muda langsung mengejutkan dunia. Memenangkan gelar juara dunia pertamanya secara dramatis di tikungan terakhir GP Brazil 2008. Ini adalah era mesin V8 dan gaya mengemudi yang buas.',
+                
+                // 📷 INPUT LOGO & BACKGROUND MCLAREN DI SINI
+                logoFile: 'logomclaren.png', 
+                bgFile: 'https://images.unsplash.com/photo-1522776856050-13b73060c410?q=80&w=1920',
 
-            let interestsChart;
-            const interestsCtx = document.getElementById('interestsChart');
-            if (interestsCtx) {
-                interestsChart = new Chart(interestsCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: [
-                            'Robot Industri',
-                            'Mikrokontroler',
-                            'Elektronika'
-                        ],
-                        datasets: [{
-                            label: 'Porsi Proyek',
-                            data: [50, 25, 25],
-                            backgroundColor: [
-                                'rgba(59, 130, 246, 0.8)', 
-                                'rgba(251, 191, 36, 0.8)', 
-                                'rgba(30, 58, 138, 0.8)' 
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        cutout: '60%',
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                labels: {
-                                    color: '#1e293b'
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed) {
-                                            label += context.parsed + '%';
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+                c1Icon: 'fas fa-medal', c1Title: '2008 CHAMPION', c1Text: 'Meraih gelar dunia pertamanya di tikungan terakhir lap terakhir di Interlagos, Brazil.',
+                c2Icon: 'fas fa-bolt', c2Title: 'ROOKIE SENSATION', c2Text: 'Nyaris memenangkan kejuaraan dunia di tahun debutnya (2007) dengan performa luar biasa.',
+                c3Icon: 'fas fa-car-side', c3Title: 'THE V8 ERA', c3Text: 'Menciptakan manuver-manuver ageresif yang ikonik menggunakan mesin V8 bertenaga murni.'
             }
+        ];
+
+        let currentEra = 0;
+
+        // 3. FUNGSI AJAIB PERGANTIAN ERA
+        function cycleEra() {
+            currentEra = (currentEra + 1) % eraData.length;
+            const data = eraData[currentEra];
+
+            // A. Ganti Tema CSS (Warna)
+            if (data.theme) document.body.setAttribute('data-theme', data.theme);
+            else document.body.removeAttribute('data-theme');
+
+            // B. Transisi Fade-Out
+            const elementsToFade = ['hero-headline', 'about-text', 'team-logo', 'card1-title', 'card2-title', 'card3-title'];
+            elementsToFade.forEach(id => document.getElementById(id).style.opacity = 0);
+
+            setTimeout(() => {
+                // C. Ganti Isi DOM
+                document.getElementById('era-btn-text').innerText = data.btnText;
+                document.getElementById('hero-year').innerText = data.year;
+                document.getElementById('hero-headline').innerHTML = data.headline;
+                document.getElementById('hero-stat-titles').innerText = data.statTitles;
+                document.getElementById('hero-stat-wins').innerText = data.statWins;
+                
+                document.getElementById('about-title').innerText = data.aboutTitle;
+                document.getElementById('about-text').innerText = data.aboutText;
+                
+                // D. Ganti Background & LOGO PNG!
+                document.getElementById('dynamic-bg').style.backgroundImage = `url('${data.bgFile}')`;
+                document.getElementById('team-logo').src = data.logoFile;
+
+                // E. Ganti Data Hall of Fame
+                document.getElementById('card1-icon').className = data.c1Icon;
+                document.getElementById('card1-title').innerText = data.c1Title;
+                document.getElementById('card1-text').innerText = data.c1Text;
+
+                document.getElementById('card2-icon').className = data.c2Icon;
+                document.getElementById('card2-title').innerText = data.c2Title;
+                document.getElementById('card2-text').innerText = data.c2Text;
+
+                document.getElementById('card3-icon').className = data.c3Icon;
+                document.getElementById('card3-title').innerText = data.c3Title;
+                document.getElementById('card3-text').innerText = data.c3Text;
+
+                // F. Animasi Fade-In
+                elementsToFade.forEach(id => document.getElementById(id).style.opacity = 1);
+            }, 400); 
+        }
+
+        // ========================================================
+        // 4. LIVE TELEMETRY SIMULATOR 
+        // ========================================================
+        const speedEl = document.getElementById('val-speed');
+        const rpmEl = document.getElementById('val-rpm');
+        const gearEl = document.getElementById('val-gear');
+        const gforceEl = document.getElementById('val-gforce');
+        let speed = 80, gear = 2, rpm = 4000, accelerating = true;
+
+        setInterval(() => {
+            if(Math.random() > 0.95) accelerating = !accelerating;
             
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    if (skillsChart) skillsChart.resize();
-                    if (interestsChart) interestsChart.resize();
-                }, 250);
+            if(accelerating) { speed += Math.floor(Math.random()*5); rpm += Math.floor(Math.random()*400); } 
+            else { speed -= Math.floor(Math.random()*8); rpm -= Math.floor(Math.random()*600); }
+
+            if(speed > 330) speed = 330; if(speed < 60) speed = 60;
+            
+            if(rpm > 11500 && gear < 8) { gear++; rpm = 8500; } 
+            else if(rpm < 7000 && gear > 2) { gear--; rpm = 10000; }
+            if(rpm > 12500) rpm = 12500; if(rpm < 4000) rpm = 4000;
+
+            speedEl.innerText = speed; rpmEl.innerText = rpm;
+            gearEl.innerText = gear; gforceEl.innerText = (Math.random() * (speed > 250 ? 4 : 2) + 1).toFixed(1);
+        }, 100);
+
+        // ========================================================
+        // 5. 3D TILT CARDS LOGIC
+        // ========================================================
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left, y = e.clientY - rect.top;
+                const rotateX = ((y - rect.height/2) / (rect.height/2)) * -10;
+                const rotateY = ((x - rect.width/2) / (rect.width/2)) * 10;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
+            card.addEventListener('mouseleave', () => card.style.transform = `rotateX(0deg) rotateY(0deg)`);
         });
     </script>
 </body>
