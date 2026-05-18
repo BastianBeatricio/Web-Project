@@ -3,166 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LH44 | Ultimate Era Databank</title>
+    <title>LH44 | Interactive Era Archive</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Share+Tech+Mono&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* TRANSISI GLOBAL */
-        * { transition: background-color 0.8s ease, border-color 0.8s ease, color 0.5s ease, text-shadow 0.5s ease; }
+        * { transition: border-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease; }
 
-        /* TEMA: MERCEDES (DEFAULT) */
+        /* THEMES (WARNA ERA) */
         :root {
-            --bg-dark: #050608;
-            --primary: #00A19C; 
-            --primary-glow: rgba(0, 161, 156, 0.6);
-            --panel-bg: rgba(10, 12, 15, 0.7);
+            --bg-dark: #07090f;
+            --primary: #00e5df; 
+            --primary-glow: rgba(0, 229, 223, 0.8);
+            --panel-bg: rgba(5, 8, 12, 0.85); 
         }
-
-        /* TEMA: FERRARI */
         [data-theme="ferrari"] {
-            --primary: #FF2800; 
-            --primary-glow: rgba(255, 40, 0, 0.6);
-            --panel-bg: rgba(20, 5, 5, 0.7);
+            --bg-dark: #140505;
+            --primary: #ff2800; 
+            --primary-glow: rgba(255, 40, 0, 0.8);
+            --panel-bg: rgba(15, 3, 3, 0.85);
         }
-
-        /* TEMA: MCLAREN */
         [data-theme="mclaren"] {
-            --primary: #FF8700; 
-            --primary-glow: rgba(255, 135, 0, 0.6);
-            --panel-bg: rgba(25, 12, 5, 0.7);
+            --bg-dark: #140d05;
+            --primary: #ff8700; 
+            --primary-glow: rgba(255, 135, 0, 0.8);
+            --panel-bg: rgba(15, 8, 2, 0.85);
         }
 
-        body {
-            background-color: var(--bg-dark); color: #fff;
-            font-family: 'Rajdhani', sans-serif; overflow-x: hidden;
-            scroll-behavior: smooth;
+        body { background-color: var(--bg-dark); color: #ffffff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; scroll-behavior: smooth; user-select: none; }
+        .title-display { font-family: 'Syncopate', sans-serif; text-transform: uppercase; font-weight: 700; }
+        .tech-font { font-family: 'Share Tech Mono', monospace; }
+
+        /* BACKGROUND SYSTEM (4-STAGE SCROLL) */
+        #dynamic-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-size: cover; background-position: center; z-index: -3; 
+            transition: background-image 1.2s ease-in-out; 
+            background-image: url('merci1.gif'); 
         }
-
-        .title-display { font-family: 'Syncopate', sans-serif; text-transform: uppercase; }
-
-        /* SCANLINE OVERLAY */
+        .hero-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.95) 100%); z-index: -2; 
+        }
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px; pointer-events: none; z-index: 999; opacity: 0.3;
+            background-size: 100% 4px; pointer-events: none; z-index: -1; opacity: 0.3;
         }
 
-        /* NAVBAR */
-        .navbar { background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-bottom: 2px solid var(--primary); }
-        .nav-link { color: #fff !important; font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 1px; }
-        .nav-link:hover { color: var(--primary) !important; text-shadow: 0 0 10px var(--primary); }
+        /* NAVBAR & INDICATOR */
+        .navbar { background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-bottom: 2px solid var(--primary); }
+        .nav-link { color: #ccc !important; font-family: 'Syncopate'; font-size: 0.75rem; letter-spacing: 1.5px; transition: 0.3s; border-bottom: 2px solid transparent;}
+        .nav-link:hover { color: #fff !important; }
+        .nav-link.active { color: var(--primary) !important; border-bottom: 2px solid var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
         
-        .era-btn {
-            background: rgba(0,0,0,0.5); border: 1px solid var(--primary); color: var(--primary);
-            padding: 8px 20px; font-family: 'Syncopate', sans-serif; font-size: 0.75rem; font-weight: bold;
-            cursor: pointer; position: relative; overflow: hidden; letter-spacing: 2px;
-        }
-        .era-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary-glow); }
+        .era-btn { background: rgba(0,0,0,0.5); border: 2px solid var(--primary); color: #fff; padding: 8px 15px; font-family: 'Syncopate'; font-size: 0.75rem; cursor: pointer; letter-spacing: 1px; display: inline-block; text-decoration: none;}
+        .era-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
 
-        /* HERO & BACKGROUND */
-        #dynamic-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-            background-size: cover; background-position: center; background-attachment: fixed;
-            z-index: -2; transition: background-image 1s ease-in-out;
-        }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%); z-index: -1;
-        }
-
-        .hero { height: 100vh; display: flex; align-items: center; position: relative; padding-top: 80px; }
-        .hero-title {
-            font-size: 5vw; font-weight: 700; color: transparent;
-            -webkit-text-stroke: 2px var(--primary); text-shadow: 0 0 30px var(--primary-glow); line-height: 1.1;
-        }
-        .hero-subtitle { font-size: 1.5rem; letter-spacing: 5px; color: #ccc; font-weight: bold; }
-
-        /* GLASS PANELS UMUM */
+        /* GLASS PANELS */
         .glass-box {
-            background: var(--panel-bg); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05); padding: 30px;
-            border-radius: 8px; border-bottom: 2px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--panel-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15); padding: 25px; border-radius: 8px; border-bottom: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        /* LOGO IMAGE STYLING */
-        .team-logo-img {
-            max-width: 100%; max-height: 250px; object-fit: contain;
-            filter: drop-shadow(0 0 20px var(--primary-glow));
-            transition: all 0.8s ease;
+        /* HERO */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; }
+        .hero-title { font-size: clamp(2.5rem, 6vw, 6rem); color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,1), 0 0 30px var(--primary-glow); line-height: 1.1; margin: 10px 0; }
+        .hud-stats { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
+        .hud-box { border: 1px solid var(--primary); padding: 15px 25px; background: rgba(0,0,0,0.6); box-shadow: 0 0 15px var(--primary-glow) inset; border-radius: 5px; min-width: 150px;}
+
+        /* CHRONICLES STATIONS */
+        .profile-w-badge-container { position: relative; width: 100%; max-width: 320px; margin: 0 auto 25px; }
+        .driver-card-frame { width: 100%; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; border: 4px solid var(--primary); box-shadow: 0 0 30px var(--primary-glow); background: #111; }
+        .driver-card-frame img.profile-pic { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+        .floating-badge { position: absolute; bottom: 0; right: 0; width: 100px; height: 100px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 15px; border: 4px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 5; }
+        .floating-badge img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .data-grid-station { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .data-station-item { background: rgba(0,0,0,0.4); border-top: 2px solid var(--primary); padding: 15px; border-radius: 6px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .data-station-item span { font-size: 1.8rem; color: var(--primary); font-family: 'Share Tech Mono', monospace; font-weight: bold; text-shadow: 0 0 10px var(--primary-glow); }
+
+        /* MASTERCLASS */
+        .masterclass-link { transition: 0.3s; pointer-events: auto !important; }
+        .race-list-item { padding: 15px; border-left: 3px solid rgba(255,255,255,0.1); margin-bottom: 10px; cursor: pointer; background: rgba(0,0,0,0.5); transition: 0.3s;}
+        .race-list-item.active, .race-list-item:hover { border-left: 5px solid var(--primary); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px var(--primary-glow); }
+        
+        .btn-youtube-recap {
+            background: rgba(0,0,0,0.6); border: 2px solid #ff0000 !important; color: #fff !important;
+            box-shadow: 0 0 15px rgba(255,0,0,0.4); cursor: pointer !important; pointer-events: auto !important;
+            position: relative; z-index: 99; display: inline-block; text-decoration: none;
         }
+        .btn-youtube-recap:hover { background: #ff0000; color: #fff !important; box-shadow: 0 0 25px #ff0000; }
 
-        /* THE CHRONICLES (ABOUT) */
-        .story-panel { border-left: 4px solid var(--primary); padding-left: 30px; margin-top: 30px; }
-        .story-text { font-size: 1.2rem; color: #bbb; line-height: 1.8; }
+        /* INTERACTIVE STEERING WHEEL + LIVE LED SHIFT LIGHTS */
+        .f1-steering-wheel {
+            background: #111; border-radius: 40px; border: 3px solid #333;
+            padding: 25px 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,0,0,1);
+            position: relative; overflow: hidden; max-width: 440px; margin: 0 auto;
+        }
+        .led-shift-lights {
+            display: flex; justify-content: center; gap: 8px; background: #000;
+            padding: 8px; border-radius: 20px; width: 85%; margin: 0 auto 15px; border: 1px solid #444;
+        }
+        .led-bulb { width: 12px; height: 12px; background: #222; border-radius: 50%; transition: background 0.05s ease, box-shadow 0.05s ease; }
+        .wheel-screen { background: #000; border: 2px solid var(--primary); border-radius: 5px; padding: 12px; text-align: center; box-shadow: inset 0 0 15px var(--primary-glow); margin: 0 auto 20px; width: 85%; }
+        .wheel-btn { width: 100%; padding: 12px 5px; font-family: 'Syncopate', sans-serif; font-size: 0.75rem; font-weight: bold; border-radius: 50px; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); transition: 0.2s; text-align: center; background: #222; color: #fff; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
+        
+        .btn-drs { border-color: #00ff00; color: #00ff00; }
+        .btn-drs:hover, .btn-drs.active { background: #00ff00; color: #000; box-shadow: 0 0 15px #00ff00; }
+        .btn-magic { border-color: #ff00ff; color: #ff00ff; }
+        .btn-magic:hover, .btn-magic.active { background: #ff00ff; color: #000; box-shadow: 0 0 15px #ff00ff; }
+        .btn-pit { border-color: #ff8700; color: #ff8700; }
+        .btn-pit:hover, .btn-pit.active { background: #ff8700; color: #000; box-shadow: 0 0 15px #ff8700; }
+        .btn-strat { border-color: var(--primary); color: var(--primary); }
+        .btn-strat:hover, .btn-strat.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
+        .btn-radio { border-color: #ffff00; color: #ffff00; }
+        .btn-radio:hover, .btn-radio.active { background: #ffff00; color: #000; box-shadow: 0 0 15px #ffff00; }
+        .btn-neutral { border-color: #ff0000; color: #ff0000; }
+        .btn-neutral:hover, .btn-neutral.active { background: #ff0000; color: #fff; box-shadow: 0 0 15px #ff0000; }
 
-        /* TELEMETRY */
-        .data-val { font-size: 3rem; color: var(--primary); font-family: 'Syncopate', sans-serif; text-shadow: 0 0 10px var(--primary-glow); }
+        /* LIVE TELEMETRY LOG BUS TERMINAL */
+        .system-log { background: #04060a; border: 1px solid #222; border-top: 15px solid #222; padding: 20px; border-radius: 5px; font-family: 'Share Tech Mono', monospace; color: #0f0; height: 100%; box-shadow: inset 0 0 20px rgba(0,255,0,0.05); }
+        .log-header { color: #555; border-bottom: 1px dashed #222; padding-bottom: 8px; margin-bottom: 12px; font-size: 0.8rem; }
+        .live-wave-container { background: #000; border: 1px solid #222; border-radius: 4px; padding: 10px; margin-top: 15px; }
 
-        /* HALL OF FAME (3D TILT CARDS) */
+        /* UPLINK GUIDE COMPONENTS */
+        .guide-item { border-left: 3px solid var(--primary); padding-left: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 0 6px 6px 0; }
+
+        /* 3D TILT CARDS */
         .tilt-card-wrapper { perspective: 1000px; }
-        .tilt-card {
-            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.05);
-            border-top: 3px solid var(--primary); padding: 40px 30px; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border-radius: 12px; transform-style: preserve-3d; transition: transform 0.1s;
-        }
-        .tilt-card * { transform: translateZ(50px); text-align: center; }
-        .tilt-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--primary-glow)); }
+        .tilt-card { background: var(--panel-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--primary); padding: 40px 25px; height: 100%; display: flex; flex-direction: column; align-items: center; border-radius: 12px; transform-style: preserve-3d; transition: transform 0.1s; text-align: center; }
+        .tilt-card * { transform: translateZ(40px); }
+        .tilt-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--primary-glow)); }
 
-        /* CONTACT FORM */
-        .form-control { background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; font-family: 'Syncopate'; }
-        .form-control:focus { background: rgba(0,0,0,0.9); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); color: #fff; }
+        /* CONTACT FORM COMPONENTS */
+        .form-control { background: rgba(0,0,0,0.7); border: 1px solid #777; color: #fff; font-size: 1.1rem; }
+        .form-control:focus { background: rgba(0,0,0,0.9); border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); color: #fff; }
+        
+        /* FOOTER SOCIAL LINK EFFECTS */
+        .footer-social-icon { color: #ffffff !important; font-size: 1.6rem; transition: 0.3s ease; display: inline-block; pointer-events: auto !important; }
+        .footer-social-icon:hover { color: var(--primary) !important; transform: translateY(-5px); filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        
+        /* FIX TEKS FOOTER */
+        .footer-text-visible { color: rgba(255, 255, 255, 0.5) !important; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
     <div id="dynamic-bg"></div>
     <div class="hero-overlay"></div>
+    <div class="scanlines"></div>
 
     <nav class="navbar navbar-expand-lg fixed-top py-3">
         <div class="container px-4">
-            <a class="navbar-brand text-white title-display" href="#home">
+            <a class="navbar-brand text-white title-display" href="#home" style="font-size: 1.5rem; text-shadow: 0 0 10px #000;">
                 <span style="color: var(--primary);">LH</span>44
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="fas fa-bars" style="color: var(--primary);"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">HOME</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">THE CHRONICLES</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#telemetry">TELEMETRY</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#halloffame">HALL OF FAME</a></li>
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item"><a class="nav-link active" href="#home">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">CHRONICLES</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#masterclass">RACES</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color:var(--primary)!important;" href="#steering">SYSTEMS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#halloffame">RECORDS</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">UPLINK</a></li>
                 </ul>
                 <button class="era-btn mt-3 mt-lg-0" onclick="cycleEra()" id="era-btn-text">
-                    [ MERCEDES ERA ]
+                    [ ERA: MERCEDES ]
                 </button>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="hero">
-        <div class="container px-4 position-relative">
-            <div class="row">
-                <div class="col-lg-10" data-aos="fade-right" data-aos-duration="1500">
-                    <p class="hero-subtitle mb-2" id="hero-year">2013 - 2024</p>
-                    <h1 class="hero-title title-display" id="hero-headline">THE SILVER ARROW<br>DOMINANCE</h1>
-                    
-                    <div class="mt-5 d-flex flex-wrap gap-4 align-items-center">
-                        <div class="glass-box text-center p-3" style="min-width: 150px;">
-                            <p class="mb-0 text-muted" style="letter-spacing: 2px; font-size: 0.8rem;">WORLD TITLES</p>
-                            <span class="data-val" id="hero-stat-titles">6</span>
+    <section id="home" class="hero section-scroll">
+        <div class="container text-center" data-aos="zoom-in" data-aos-duration="1500">
+            <p class="title-display" style="color: var(--primary); letter-spacing: 8px; font-size: 1.2rem; text-shadow: 0 2px 5px #000;">ACTIVE ARCHIVE: <span id="hero-year">2013-2024</span></p>
+            <h1 class="hero-title title-display" id="hero-headline">THE SILVER ARROW DOMINANCE</h1>
+            
+            <div class="hud-stats">
+                <div class="hud-box">
+                    <p class="tech-font mb-0 text-white-50">WORLD_TITLES</p>
+                    <span class="title-display fs-1 text-white" id="hero-stat-titles">6</span>
+                </div>
+                <div class="hud-box">
+                    <p class="tech-font mb-0 text-white-50">ERA_VICTORIES</p>
+                    <span class="title-display fs-1 text-white" id="hero-stat-wins">82</span>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <a href="#about" class="era-btn px-4 py-2 title-display" style="font-size: 0.85rem; border-radius: 50px;">
+                    EXPLORE DATABASE <i class="fas fa-chevron-down ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5 mt-5 section-scroll">
+        <div class="container py-5 px-4 mt-5">
+            <h2 class="title-display text-center mb-5 text-white" style="text-shadow: 0 5px 15px #000;" data-aos="fade-down">DRIVER IDENTIFICATION</h2>
+            
+            <div class="row g-4 match-height">
+                <div class="col-xl-4 col-lg-5" data-aos="fade-right">
+                    <div class="glass-box text-center h-100 d-flex flex-column justify-content-center py-5">
+                        <div class="profile-w-badge-container">
+                            <div class="driver-card-frame">
+                                <img id="profile-pic" class="profile-pic" src="profilmerci1.jpg" alt="Driver Profile">
+                            </div>
+                            <div class="floating-badge">
+                                <img id="team-logo" src="logomercedes.png" alt="Team Logo">
+                            </div>
                         </div>
-                        <div class="glass-box text-center p-3" style="min-width: 150px;">
-                            <p class="mb-0 text-muted" style="letter-spacing: 2px; font-size: 0.8rem;">ERA WINS</p>
-                            <span class="data-val" id="hero-stat-wins">82</span>
+                        <h3 class="title-display text-white mt-3 mb-1">HAMILTON</h3>
+                        <p class="tech-font mb-0 fs-5" style="color: var(--primary);">CAR NUMBER: #44</p>
+                    </div>
+                </div>
+                
+                <div class="col-xl-8 col-lg-7" data-aos="fade-left">
+                    <div class="glass-box h-100">
+                        <h4 class="title-display mb-3 text-white" id="about-title" style="text-shadow: 0 2px 10px #000;">A LEGACY FORGED IN BRACKLEY</h4>
+                        <p class="fs-5 text-white-50 mb-4" id="about-text" style="line-height: 1.7;">
+                            Berpindah dari McLaren ke Mercedes pada 2013 adalah pertaruhan terbesar dalam sejarah F1. Bersama pabrikan Jerman ini, ia mendominasi era V6 Turbo Hybrid, memecahkan rekor Michael Schumacher, dan mengubah nomor 44 menjadi simbol dominasi absolut.
+                        </p>
+                        
+                        <div class="row g-4 pt-4 border-top border-secondary align-items-center">
+                            <div class="col-md-5">
+                                <div class="data-grid-station">
+                                    <div class="data-station-item"><p class="tech-font text-white-50 mb-0" style="font-size: 0.75rem;">WIN PCT.</p><span id="data-win-pct">35.2%</span></div>
+                                    <div class="data-station-item"><p class="tech-font text-white-50 mb-0" style="font-size: 0.75rem;">POLES</p><span id="data-poles">78</span></div>
+                                    <div class="data-station-item"><p class="tech-font text-white-50 mb-0" style="font-size: 0.75rem;">PODIUMS</p><span id="data-podiums">148</span></div>
+                                    <div class="data-station-item"><p class="tech-font text-white-50 mb-0" style="font-size: 0.75rem;">FAST LAPS</p><span id="data-fastest">53</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-7 ps-md-4 border-start border-secondary">
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <p class="tech-font text-white-50 mb-2" style="font-size: 0.75rem;">SKILLS MATRIX</p>
+                                        <canvas id="skillsChart" style="max-height: 130px;"></canvas>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p class="tech-font text-white-50 mb-2" style="font-size: 0.75rem;">ERA SPLIT</p>
+                                        <canvas id="interestsChart" style="max-height: 130px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,278 +260,511 @@
         </div>
     </section>
 
-    <section id="about" class="py-5" style="background: rgba(0,0,0,0.85); position: relative; z-index: 10;">
+    <section id="masterclass" class="py-5 section-scroll">
         <div class="container py-5 px-4">
-            <div class="row align-items-center">
-                <div class="col-lg-8 mb-5 mb-lg-0" data-aos="fade-up">
-                    <h5 style="color: var(--primary); letter-spacing: 3px;">DATABASE ARCHIVE</h5>
-                    <h2 class="title-display mb-4" id="about-title" style="font-size: 2.5rem;">A LEGACY FORGED IN BRACKLEY</h2>
-                    <div class="story-panel">
-                        <p class="story-text" id="about-text">
-                            Berpindah dari McLaren ke Mercedes pada 2013 dianggap sebagai pertaruhan terbesar dalam sejarah F1. Namun Hamilton membuktikan sebaliknya. Bersama pabrikan Jerman ini, ia mendominasi era V6 Turbo Hybrid, memecahkan rekor Michael Schumacher, dan mengubah nomor 44 menjadi simbol dominasi absolut.
+            <h2 class="text-center mb-5 title-display text-white" style="text-shadow: 0 5px 15px #000;" data-aos="fade-up">ICONIC MASTERCLASS</h2>
+            <div class="row g-4" data-aos="zoom-in-up">
+                <div class="col-lg-4">
+                    <div class="glass-box h-100 p-3">
+                        <p class="text-center tech-font text-white-50">SELECT_RACE_LOG</p>
+                        <div id="race-list-container" class="mt-3"></div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="glass-box h-100 d-flex align-items-center">
+                        <div class="row w-100">
+                            <div class="col-md-5 text-center text-md-start">
+                                <p class="tech-font text-white-50 mb-0">LOCATION</p>
+                                <h3 class="title-display text-white mb-2" id="display-race-event">GP BRAZIL 2021</h3>
+                                <p class="tech-font text-white-50 mb-0 mt-3">CIRCUIT</p>
+                                <h5 class="title-display" id="display-race-track" style="color: var(--primary);">INTERLAGOS</h5>
+                                <a href="https://www.youtube.com/results?search_query=Lewis+Hamilton+GP+Brazil+2021" id="display-race-link" target="_blank" class="era-btn masterclass-link btn-youtube-recap mt-4 d-inline-block px-4 py-2">
+                                    <i class="fab fa-youtube me-2 fs-5"></i> WATCH RECAP
+                                </a>
+                            </div>
+                            <div class="col-md-7 mt-4 mt-md-0" style="border-left: 1px dashed var(--primary); padding-left: 20px;">
+                                <p class="tech-font text-white fs-6" id="display-race-desc">
+                                    Memulai dari baris belakang, Hamilton melakukan aksi overtaking legendaris sebanyak 25 kali untuk merebut kemenangan mutlak.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="steering" class="py-5 section-scroll" style="background: rgba(0,0,0,0.85); border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary);">
+        <div class="container py-5 px-4">
+            <div class="text-center mb-5">
+                <h2 class="title-display text-white" style="text-shadow: 0 0 20px var(--primary-glow);">EMBEDDED COCKPIT TELEMETRY</h2>
+                <p class="tech-font text-white-50">INTERACTIVE HARDWARE INTERFACE & REAL-TIME CAN-BUS OSCILLOSCOPE</p>
+            </div>
+            
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="glass-box p-4">
+                        <div class="led-shift-lights" id="rpm-leds">
+                            <div class="led-bulb"></div><div class="led-bulb"></div><div class="led-bulb"></div>
+                            <div class="led-bulb"></div><div class="led-bulb"></div><div class="led-bulb"></div>
+                            <div class="led-bulb"></div><div class="led-bulb"></div><div class="led-bulb"></div>
+                        </div>
+                        <div class="f1-steering-wheel">
+                            <div class="wheel-screen position-relative">
+                                <p class="tech-font text-white-50 mb-0" style="font-size: 0.7rem; position: absolute; top:5px; left:10px;">LIVE FLOW</p>
+                                <p class="tech-font mb-0" style="color: #0f0; font-size: 0.7rem; position: absolute; top:5px; right:10px;">ERR_0%</p>
+                                <h1 class="title-display text-white mt-2 mb-0" style="font-size: 2.8rem;" id="screen-rpm-val">11200</h1>
+                                <p class="tech-font text-white-50 mb-0" id="screen-speed-val">318 KM/H</p>
+                            </div>
+                            <div class="row g-3 px-2">
+                                <div class="col-4 d-flex flex-column gap-3">
+                                    <div class="wheel-btn btn-drs" onclick="showLog('drs')">DRS</div>
+                                    <div class="wheel-btn btn-magic" onclick="showLog('magic')">B-MAGIC</div>
+                                    <div class="wheel-btn btn-radio" onclick="showLog('radio')">RADIO</div>
+                                </div>
+                                <div class="col-4 d-flex flex-column justify-content-end pb-3 text-center">
+                                    <div style="width:55px; height:55px; border-radius:50%; border:3px dashed var(--primary); margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-microchip" style="color: var(--primary);"></i>
+                                    </div>
+                                    <p class="tech-font text-white-50 mt-2 mb-0" style="font-size: 0.65rem;">MCU_DIAL</p>
+                                </div>
+                                <div class="col-4 d-flex flex-column gap-3">
+                                    <div class="wheel-btn btn-strat" onclick="showLog('strat')">STRAT</div>
+                                    <div class="wheel-btn btn-pit" onclick="showLog('pit')">PIT LIMIT</div>
+                                    <div class="wheel-btn btn-neutral" onclick="showLog('neutral')">NEUTRAL</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="system-log d-flex flex-column justify-content-between" style="min-height: 420px;">
+                        <div>
+                            <div class="log-header">
+                                >> CAN-BUS DECODER MODULE ACTIVE // FREQ: 500KB/S <br>
+                                >> INTERACT WITH BUTTONS TO INJECT BUS COMMAND
+                            </div>
+                            <h4 class="title-display text-white mb-2" id="log-title" style="text-shadow: 0 0 10px #fff;">STREAM STANDBY</h4>
+                            <p class="tech-font mb-0" id="log-desc" style="font-size: 1rem; line-height: 1.6; color: #a3b8cc;">
+                                Klik salah satu tombol kemudi elektronik di kiri untuk memicu injeksi data biner, interupsi sinyal mikrokontroler, dan memetakan respon aktuator fisik kendaraan.
+                            </p>
+                        </div>
+                        <div class="live-wave-container">
+                            <p class="tech-font mb-1 text-white-50" style="font-size: 0.75rem;">LIVE BUS TELEMETRY SIGNAL WAVE:</p>
+                            <canvas id="liveWaveCanvas" width="500" height="90" style="width: 100%; height: 90px;"></canvas>
+                        </div>
+                        <p class="tech-font text-white-50 mb-0 mt-2" style="font-size: 0.85rem;" id="log-tech">
+                            [ BUS_STATE: LISTENING_MODE / NO_ERRORS ]
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4 text-center" data-aos="zoom-in">
-                    <div class="glass-box d-flex justify-content-center align-items-center" style="height: 350px; border-radius: 50%;">
-                        <img id="team-logo" src="logomercedes.png" alt="Team Logo" class="team-logo-img">
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <section id="telemetry" class="py-5" style="background: var(--bg-dark);">
+    <section id="halloffame" class="py-5 mt-5 section-scroll">
         <div class="container py-5 px-4">
-            <h2 class="text-center mb-5 title-display" style="color: var(--primary);" data-aos="fade-down">ACTIVE TELEMETRY</h2>
-            <div class="row g-4 text-center">
-                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="100">
-                    <div class="glass-box p-4">
-                        <p class="text-muted mb-1" style="letter-spacing: 2px;">VELOCITY</p>
-                        <span class="data-val" id="val-speed">0</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="200">
-                    <div class="glass-box p-4">
-                        <p class="text-muted mb-1" style="letter-spacing: 2px;">ENGINE RPM</p>
-                        <span class="data-val" id="val-rpm">0</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="300">
-                    <div class="glass-box p-4">
-                        <p class="text-muted mb-1" style="letter-spacing: 2px;">GEARBOX</p>
-                        <span class="data-val" id="val-gear">N</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="flip-up" data-aos-delay="400">
-                    <div class="glass-box p-4">
-                        <p class="text-muted mb-1" style="letter-spacing: 2px;">G-FORCE</p>
-                        <span class="data-val" id="val-gforce">1.0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="halloffame" class="py-5" style="background: rgba(0,0,0,0.7);">
-        <div class="container py-5 px-4">
-            <h2 class="text-center mb-5 title-display" style="color: var(--primary);" data-aos="fade-up">HALL OF FAME</h2>
+            <h2 class="text-center mb-5 title-display text-white" style="text-shadow: 0 5px 15px #000;" data-aos="fade-up">RECORDS & MILESTONES</h2>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="100">
                     <div class="tilt-card">
                         <i id="card1-icon" class="fas fa-crown"></i>
-                        <h4 id="card1-title" class="title-display fs-5">7X CHAMPION</h4>
-                        <p id="card1-text" class="text-muted mt-3">Menyamai rekor abadi, mengukir era keemasan bersama dominasi Mercedes.</p>
+                        <h4 id="card1-title" class="title-display fs-4 text-white">7X CHAMPION</h4>
+                        <p id="card1-text" class="mt-3 text-white-50 tech-font text-center">Menyamai rekor abadi di era keemasan Mercedes.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="300">
                     <div class="tilt-card">
                         <i id="card2-icon" class="fas fa-tachometer-alt"></i>
-                        <h4 id="card2-title" class="title-display fs-5">100+ VICTORIES</h4>
-                        <p id="card2-text" class="text-muted mt-3">Pembalap pertama dalam sejarah yang menembus tiga digit kemenangan.</p>
+                        <h4 id="card2-title" class="title-display fs-4 text-white">100+ VICTORIES</h4>
+                        <p id="card2-text" class="mt-3 text-white-50 tech-font text-center">Pembalap pertama yang menembus tiga digit kemenangan.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 tilt-card-wrapper" data-aos="zoom-in" data-aos-delay="500">
                     <div class="tilt-card">
                         <i id="card3-icon" class="fas fa-hand-holding-heart"></i>
-                        <h4 id="card3-title" class="title-display fs-5">MISSION 44</h4>
-                        <p id="card3-text" class="text-muted mt-3">Mendirikan yayasan amal untuk mendukung keragaman dalam dunia motorsport.</p>
+                        <h4 id="card3-title" class="title-display fs-4 text-white">MISSION 44</h4>
+                        <p id="card3-text" class="mt-3 text-white-50 tech-font text-center">Mendirikan yayasan amal mendukung keragaman motorsport.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-5" style="background: var(--bg-dark); border-top: 1px solid rgba(255,255,255,0.05);">
-        <div class="container py-5 px-4">
-            <div class="row justify-content-center">
-                <div class="col-lg-8" data-aos="fade-up">
-                    <h2 class="text-center mb-5 title-display" style="color: var(--primary);">SECURE UPLINK</h2>
-                    <div class="glass-box">
-                        <form onsubmit="event.preventDefault(); alert('Transmission Sent to LH44 Nexus.');">
+    <section id="contact" class="py-5 section-scroll">
+        <div class="container py-5 px-4 mb-5">
+            <div class="row g-4 justify-content-center">
+                
+                <div class="col-lg-7" data-aos="fade-right">
+                    <div class="glass-box h-100">
+                        <h2 class="mb-4 title-display text-white" style="font-size: 1.8rem;">SECURE UPLINK</h2>
+                        <form id="uplinkForm" onsubmit="handleFormSubmit(event)">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">CALLSIGN (NAME)</label>
-                                    <input type="text" class="form-control py-2" required>
+                                    <label class="form-label text-white fw-bold" style="letter-spacing: 2px; font-size: 0.9rem;">CALLSIGN (NAME)</label>
+                                    <input type="text" id="formName" class="form-control py-3" placeholder="Identify yourself..." required>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">COMMS LINK (EMAIL)</label>
-                                    <input type="email" class="form-control py-2" required>
+                                    <label class="form-label text-white fw-bold" style="letter-spacing: 2px; font-size: 0.9rem;">COMMS LINK (EMAIL)</label>
+                                    <input type="email" id="formEmail" class="form-control py-3" placeholder="Enter routing email..." required>
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label" style="color: var(--primary); letter-spacing: 2px; font-size: 0.8rem;">ENCRYPTED DATA (MESSAGE)</label>
-                                <textarea class="form-control py-2" rows="5" required></textarea>
+                                <label class="form-label text-white fw-bold" style="letter-spacing: 2px; font-size: 0.9rem;">DATA PACKET MODULE (MESSAGE)</label>
+                                <textarea id="formMessage" class="form-control py-3" rows="4" placeholder="Inject text data packet..." required></textarea>
                             </div>
-                            <button type="submit" class="era-btn w-100 py-3 mt-2" style="font-size: 1rem;">
-                                TRANSMIT TO BASE
+                            <button type="submit" class="era-btn w-100 py-3 mt-2" style="font-size: 1.1rem; font-weight: bold;">
+                                TRANSMIT PACKET TO DATABASE
                             </button>
                         </form>
                     </div>
                 </div>
+
+                <div class="col-lg-5" data-aos="fade-left">
+                    <div class="glass-box h-100 d-flex flex-column justify-content-between" style="border-left: 4px solid var(--primary);">
+                        <div>
+                            <h4 class="title-display text-white mb-4" style="font-size: 1.2rem;"><i class="fas fa-info-circle me-2" style="color: var(--primary);"></i>UPLINK TRANSMIT GUIDE</h4>
+                            
+                            <div class="guide-item">
+                                <h6 class="fw-bold mb-1 text-white title-display" style="font-size: 0.8rem;">1. Callsign (Nama)</h6>
+                                <p class="mb-0 text-white-50" style="font-size: 0.9rem;">Isi dengan identitas atau nama panggilanmu sebagai pengirim instruksi/pesan jaringan.</p>
+                            </div>
+
+                            <div class="guide-item">
+                                <h6 class="fw-bold mb-1 text-white title-display" style="font-size: 0.8rem;">2. Comms Link (Email)</h6>
+                                <p class="mb-0 text-white-50" style="font-size: 0.9rem;">Isi dengan alamat email aktif yang valid sebagai jalur konfirmasi transmisi balasan.</p>
+                            </div>
+
+                            <div class="guide-item mb-0">
+                                <h6 class="fw-bold mb-1 text-white title-display" style="font-size: 0.8rem;">3. Data Packet (Pesan)</h6>
+                                <p class="mb-0 text-white-50" style="font-size: 0.9rem;">Ketikkan isi pesan, tanggapan, atau umpan balik data yang ingin kamu simpan ke dalam basis data.</p>
+                            </div>
+                        </div>
+
+                        <p class="tech-font text-white-50 mb-0 mt-3" style="font-size: 0.8rem;">
+                            [ SCHEMA STATE: READY_FOR_INPUT ]
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <footer class="py-4 text-center" style="background: rgba(0,0,0,0.9); border-top: 1px solid var(--primary);">
-        <p class="mb-0 text-muted" style="font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 3px;">© 2026 LH44_NEXUS | DEVELOPED BY BASTIAN BEATRICIO</p>
+    <footer class="py-5 text-center" style="background: #000000; border-top: 1px solid #222;">
+        <div class="container">
+            <h4 class="title-display mb-3 text-white">LH<span style="color: var(--primary);">44</span> NEXUS</h4>
+            
+            <div class="d-flex justify-content-center gap-4 mb-4">
+                <a href="https://www.instagram.com/lewishamilton/" target="_blank" class="footer-social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/LewisHamilton" target="_blank" class="footer-social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="https://id.wikipedia.org/wiki/Lewis_Hamilton" target="_blank" class="footer-social-icon"><i class="fab fa-wikipedia-w"></i></a>
+            </div>
+            
+            <p class="mb-0 footer-text-visible">
+                © 2026 RE-ENGINEERED BY BASTIAN BEATRICIO ARJUNA PUTRA.
+            </p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // 1. INIT ANIMASI (AOS)
         AOS.init({ once: false, offset: 50 });
 
-        // ========================================================
-        // 2. MASTER DATABANK (SEMUA DATA ERA ADA DI SINI)
-        // ========================================================
-        const eraData = [
-            {
-                id: 'mercedes', theme: null, 
-                btnText: '[ ERA: MERCEDES ]',
-                year: '2013 - 2024',
-                headline: 'THE SILVER ARROW<br>DOMINANCE',
-                statTitles: '6', statWins: '82',
-                
-                // DATA ABOUT
+        // 1. DATA BACKGROUND 4 STAGE
+        const bgData = {
+            mercedes: { 'home': 'merci1.gif', 'about': 'merci2.gif', 'masterclass': 'merci3.gif', 'steering': 'merci4.gif', 'halloffame': 'merci4.gif', 'contact': 'merci4.gif' },
+            ferrari: { 'home': 'ferrari1.gif', 'about': 'ferrari2.gif', 'masterclass': 'ferrari3.gif', 'steering': 'ferrari4.gif', 'halloffame': 'ferrari4.gif', 'contact': 'ferrari4.gif' },
+            mclaren: { 'home': 'mclaren1.gif', 'about': 'mclaren2.gif', 'masterclass': 'mclaren3.gif', 'steering': 'mclaren4.gif', 'halloffame': 'mclaren4.gif', 'contact': 'mclaren4.gif' }
+        };
+
+        // 2. MASTER DATA ERA
+        const eraData = {
+            'mercedes': {
+                id: 'mercedes', theme: null, btnText: '[ ERA: MERCEDES ]', year: '2013 - 2024',
+                headline: 'THE SILVER ARROW DOMINANCE', statTitles: '6', statWins: '82',
                 aboutTitle: 'A LEGACY FORGED IN BRACKLEY',
                 aboutText: 'Berpindah dari McLaren ke Mercedes pada 2013 adalah pertaruhan terbesar dalam sejarah F1. Bersama pabrikan Jerman ini, ia mendominasi era V6 Turbo Hybrid, memecahkan rekor Michael Schumacher, dan mengubah nomor 44 menjadi simbol dominasi absolut.',
-                
-                // 📷 INPUT LOGO & BACKGROUND MERCEDES DI SINI
-                logoFile: 'logomercedes.png', 
-                bgFile: 'https://images.unsplash.com/photo-1541343672885-9be56236302a?q=80&w=1920',
-
-                // DATA HALL OF FAME (CARD 1, 2, 3)
-                c1Icon: 'fas fa-crown', c1Title: '7X CHAMPION', c1Text: 'Menyamai rekor abadi, mengukir era keemasan bersama dominasi mesin hybrid Mercedes.',
-                c2Icon: 'fas fa-tachometer-alt', c2Title: '100+ VICTORIES', c2Text: 'Pembalap pertama dalam sejarah manusia yang menembus tiga digit kemenangan grand prix.',
-                c3Icon: 'fas fa-hand-holding-heart', c3Title: 'MISSION 44', c3Text: 'Mendirikan yayasan amal untuk mendukung keragaman dan representasi inklusif di motorsport.'
+                logoFile: 'logomercedes.png', profileFile: 'profilmerci1.jpg', 
+                gridData: { win: '35.2%', poles: '78', podiums: '148', fastest: '53' },
+                radarData: [99, 100, 96, 95, 98], doughnutData: [82, 148, 78], maxRpm: 12500,
+                races: [
+                    { event: 'GP BRAZIL 2021', track: 'INTERLAGOS', desc: 'Aksi overtaking legendaris dari posisi belakang. Menyapu bersih sprint dan balapan utama secara heroik.', q: 'Lewis+Hamilton+GP+Brazil+2021' },
+                    { event: 'GP TURKEY 2020', track: 'ISTANBUL PARK', desc: 'Menang dengan ban gundul di trek basah, mengunci gelar ke-7.', q: 'Lewis+Hamilton+GP+Turkey+2020' },
+                    { event: 'GP GERMANY 2018', track: 'HOCKENHEIM', desc: 'Start P14, menang dalam kondisi hujan lebat.', q: 'Lewis+Hamilton+GP+Germany+2018' }
+                ],
+                c1Icon: 'fas fa-crown', c1Title: '7X CHAMPION', c1Text: 'Menyamai rekor abadi di era Mercedes.',
+                c2Icon: 'fas fa-tachometer-alt', c2Title: '100+ VICTORIES', c2Text: 'Pembalap pertama dengan tiga digit kemenangan.',
+                c3Icon: 'fas fa-hand-holding-heart', c3Title: 'MISSION 44', c3Text: 'Yayasan amal mendukung keragaman motorsport.'
             },
-            {
-                id: 'ferrari', theme: 'ferrari', 
-                btnText: '[ ERA: FERRARI ]',
-                year: '2025 - PRESENT',
-                headline: 'MARANELLO\'S<br>ULTIMATE DREAM',
-                statTitles: '?', statWins: '?',
-                
-                aboutTitle: 'CHASING THE 8TH WORLD TITLE',
-                aboutText: 'Sebuah kepindahan abad ini. Bergabungnya Hamilton dengan Scuderia Ferrari bukan sekadar transfer, melainkan pertemuan dua entitas paling ikonis di motorsport. Mengenakan warna merah menyala, ia membawa misi besar: mengembalikan kejayaan Kuda Jingkrak.',
-                
-                // 📷 INPUT LOGO & BACKGROUND FERRARI DI SINI
-                logoFile: 'logoferrari.png', 
-                bgFile: 'https://images.unsplash.com/photo-1596468766107-1c4b7b2513f8?q=80&w=1920',
-
-                c1Icon: 'fas fa-horse-head', c1Title: 'THE RED SUIT', c1Text: 'Bergabung dengan tim paling bersejarah di grid Formula 1 untuk babak akhir karirnya.',
-                c2Icon: 'fas fa-trophy', c2Title: 'TARGET: 8TH TITLE', c2Text: 'Misi utama membawa kembali gelar juara dunia ke Maranello setelah lebih dari satu dekade.',
-                c3Icon: 'fas fa-users', c3Title: 'THE TIFOSI', c3Text: 'Mendapat dukungan dari basis penggemar balap paling fanatik di seluruh dunia.'
+            'ferrari': {
+                id: 'ferrari', theme: 'ferrari', btnText: '[ ERA: FERRARI ]', year: '2025 - PRESENT',
+                headline: 'MARANELLO\'S ULTIMATE DREAM', statTitles: '?', statWins: '?',
+                aboutTitle: 'CHASING THE 8TH TITLE',
+                aboutText: 'Kepindahan abad ini. Mengenakan seragam merah menyala, Hamilton membawa misi besar: mengembalikan kejayaan Kuda Jingkrak dan mengejar rekor mutlak gelar juara dunia ke-8 di Maranello.',
+                logoFile: 'logoferrari.png', profileFile: 'profilferrari1.jpg', 
+                gridData: { win: 'TBD', poles: 'TBD', podiums: 'TBD', fastest: 'TBD' },
+                radarData: [95, 96, 98, 99, 94], doughnutData: [1, 5, 1], maxRpm: 12500,
+                races: [
+                    { event: 'GP ITALY 2025', track: 'MONZA', desc: 'Kemenangan perdana emosional menggunakan seragam Ferrari di hadapan Tifosi.', q: 'Lewis+Hamilton+Ferrari+Monza' },
+                    { event: 'GP CHINA 2025', track: 'SHANGHAI', desc: 'Podium pertama untuk Ferrari setelah Sprint Race yang memukau.', q: 'Lewis+Hamilton+Ferrari+Shanghai' }
+                ],
+                c1Icon: 'fas fa-horse-head', c1Title: 'THE RED SUIT', c1Text: 'Bergabung dengan tim paling bersejarah di F1.',
+                c2Icon: 'fas fa-trophy', c2Title: 'TARGET: 8TH TITLE', c2Text: 'Misi membawa kembali gelar juara dunia ke Maranello.',
+                c3Icon: 'fas fa-users', c3Title: 'THE TIFOSI', c3Text: 'Dukungan dari basis penggemar balap paling fanatik.'
             },
-            {
-                id: 'mclaren', theme: 'mclaren', 
-                btnText: '[ ERA: MCLAREN ]',
-                year: '2007 - 2012',
-                headline: 'THE WOKING<br>PRODIGY',
-                statTitles: '1', statWins: '21',
-                
+            'mclaren': {
+                id: 'mclaren', theme: 'mclaren', btnText: '[ ERA: MCLAREN ]', year: '2007 - 2012',
+                headline: 'THE WOKING PRODIGY', statTitles: '1', statWins: '21',
                 aboutTitle: 'THE BIRTH OF A CHAMPION',
-                aboutText: 'Memulai debutnya di bawah asuhan Ron Dennis, Hamilton muda langsung mengejutkan dunia. Memenangkan gelar juara dunia pertamanya secara dramatis di tikungan terakhir GP Brazil 2008. Ini adalah era mesin V8 dan gaya mengemudi yang buas.',
-                
-                // 📷 INPUT LOGO & BACKGROUND MCLAREN DI SINI
-                logoFile: 'logomclaren.png', 
-                bgFile: 'https://images.unsplash.com/photo-1522776856050-13b73060c410?q=80&w=1920',
-
-                c1Icon: 'fas fa-medal', c1Title: '2008 CHAMPION', c1Text: 'Meraih gelar dunia pertamanya di tikungan terakhir lap terakhir di Interlagos, Brazil.',
-                c2Icon: 'fas fa-bolt', c2Title: 'ROOKIE SENSATION', c2Text: 'Nyaris memenangkan kejuaraan dunia di tahun debutnya (2007) dengan performa luar biasa.',
-                c3Icon: 'fas fa-car-side', c3Title: 'THE V8 ERA', c3Text: 'Menciptakan manuver-manuver ageresif yang ikonik menggunakan mesin V8 bertenaga murni.'
+                aboutText: 'Memulai debut di bawah Ron Dennis. Memenangkan gelar juara dunia pada 2008 melalui drama tikungan terakhir lap terakhir. Era McLaren dikenal dengan mesin V8 yang menjerit dan gaya mengemudi buas.',
+                logoFile: 'logomclaren.png', profileFile: 'profilmclaren1.jpg', 
+                gridData: { win: '19.1%', poles: '26', podiums: '49', fastest: '12' },
+                radarData: [100, 98, 85, 88, 89], doughnutData: [21, 49, 26], maxRpm: 18000,
+                races: [
+                    { event: 'GP BRITAIN 2008', track: 'SILVERSTONE', desc: 'Menang dengan jarak masif 68 detik di cuaca badai hujan ekstrem.', q: 'Lewis+Hamilton+GP+Britain+2008' },
+                    { event: 'GP BRAZIL 2008', track: 'INTERLAGOS', desc: 'Menyalip di tikungan terakhir lap terakhir untuk gelar pertama.', q: 'Lewis+Hamilton+GP+Brazil+2008' },
+                    { event: 'GP MONACO 2008', track: 'MONTE CARLO', desc: 'Menang di sirkuit jalan raya paling legendaris meski sempat menabrak.', q: 'Lewis+Hamilton+GP+Monaco+2008' }
+                ],
+                c1Icon: 'fas fa-medal', c1Title: '2008 CHAMPION', c1Text: 'Gelar dunia pertama yang diraih sangat dramatis di lap terakhir.'
             }
-        ];
+        };
 
-        let currentEra = 0;
+        let currentEra = 'mercedes';
+        let activeSection = 'home';
+        let skillsChart, interestsChart;
 
-        // 3. FUNGSI AJAIB PERGANTIAN ERA
+        // INIT HALAMAN
+        document.addEventListener("DOMContentLoaded", function() {
+            Chart.defaults.color = '#888'; Chart.defaults.font.family = "'Share Tech Mono', monospace";
+
+            skillsChart = new Chart(document.getElementById('skillsChart'), {
+                type: 'radar',
+                data: { labels: ['Pace', 'Rain', 'Tire', 'Tech', 'Consist'], datasets: [{ data: eraData['mercedes'].radarData, backgroundColor: 'rgba(0, 229, 223, 0.2)', borderColor: '#00e5df', pointBackgroundColor: '#00e5df' }] },
+                options: { scales: { r: { min: 70, max: 100, angleLines: { color: '#333' }, grid: { color: '#333' }, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+            });
+            interestsChart = new Chart(document.getElementById('interestsChart'), {
+                type: 'doughnut',
+                data: { labels: ['Wins', 'Podiums', 'Poles'], datasets: [{ data: eraData['mercedes'].doughnutData, backgroundColor: ['#00e5df', '#aaa', '#444'], borderWidth: 0 }] },
+                options: { cutout: '75%', plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } }
+            });
+
+            renderRaceList(eraData['mercedes'].races);
+            initLiveOscilloscope();
+        });
+
+        // FUNGSI GANTI ERA
         function cycleEra() {
-            currentEra = (currentEra + 1) % eraData.length;
+            const eraOrder = ['mercedes', 'ferrari', 'mclaren'];
+            currentEra = eraOrder[(eraOrder.indexOf(currentEra) + 1) % eraOrder.length];
             const data = eraData[currentEra];
 
-            // A. Ganti Tema CSS (Warna)
             if (data.theme) document.body.setAttribute('data-theme', data.theme);
             else document.body.removeAttribute('data-theme');
 
-            // B. Transisi Fade-Out
-            const elementsToFade = ['hero-headline', 'about-text', 'team-logo', 'card1-title', 'card2-title', 'card3-title'];
-            elementsToFade.forEach(id => document.getElementById(id).style.opacity = 0);
+            const els = ['hero-headline', 'about-text', 'team-logo', 'profile-pic', 'race-list-container', 'data-win-pct', 'data-poles', 'data-podiums', 'data-fastest', 'card1-title', 'card2-title', 'card3-title'];
+            els.forEach(id => document.getElementById(id).style.opacity = 0);
 
             setTimeout(() => {
-                // C. Ganti Isi DOM
                 document.getElementById('era-btn-text').innerText = data.btnText;
                 document.getElementById('hero-year').innerText = data.year;
-                document.getElementById('hero-headline').innerHTML = data.headline;
+                document.getElementById('hero-headline').innerText = data.headline;
                 document.getElementById('hero-stat-titles').innerText = data.statTitles;
                 document.getElementById('hero-stat-wins').innerText = data.statWins;
                 
                 document.getElementById('about-title').innerText = data.aboutTitle;
                 document.getElementById('about-text').innerText = data.aboutText;
                 
-                // D. Ganti Background & LOGO PNG!
-                document.getElementById('dynamic-bg').style.backgroundImage = `url('${data.bgFile}')`;
+                document.getElementById('data-win-pct').innerText = data.gridData.win;
+                document.getElementById('data-poles').innerText = data.gridData.poles;
+                document.getElementById('data-podiums').innerText = data.gridData.podiums;
+                document.getElementById('data-fastest').innerText = data.gridData.fastest;
+
                 document.getElementById('team-logo').src = data.logoFile;
+                document.getElementById('profile-pic').src = data.profileFile; 
 
-                // E. Ganti Data Hall of Fame
-                document.getElementById('card1-icon').className = data.c1Icon;
-                document.getElementById('card1-title').innerText = data.c1Title;
-                document.getElementById('card1-text').innerText = data.c1Text;
+                for(let i=1; i<=3; i++) {
+                    document.getElementById(`card${i}-icon`).className = data[`c${i}Icon`];
+                    document.getElementById(`card${i}-title`).innerText = data[`c${i}Title`];
+                    document.getElementById(`card${i}-text`).innerText = data[`c${i}Text`];
+                }
 
-                document.getElementById('card2-icon').className = data.c2Icon;
-                document.getElementById('card2-title').innerText = data.c2Title;
-                document.getElementById('card2-text').innerText = data.c2Text;
+                renderRaceList(data.races);
 
-                document.getElementById('card3-icon').className = data.c3Icon;
-                document.getElementById('card3-title').innerText = data.c3Title;
-                document.getElementById('card3-text').innerText = data.c3Text;
+                // Update Chart
+                let mainColor = currentEra === 'ferrari' ? '#ff2800' : (currentEra === 'mclaren' ? '#ff8700' : '#00e5df');
+                let bgColor = currentEra === 'ferrari' ? 'rgba(255,40,0,0.2)' : (currentEra === 'mclaren' ? 'rgba(255,135,0,0.2)' : 'rgba(0,229,223,0.2)');
+                
+                skillsChart.data.datasets[0].data = data.radarData; 
+                skillsChart.data.datasets[0].borderColor = mainColor;
+                skillsChart.data.datasets[0].pointBackgroundColor = mainColor;
+                skillsChart.data.datasets[0].backgroundColor = bgColor;
+                skillsChart.update();
 
-                // F. Animasi Fade-In
-                elementsToFade.forEach(id => document.getElementById(id).style.opacity = 1);
+                interestsChart.data.datasets[0].data = data.doughnutData; 
+                interestsChart.data.datasets[0].backgroundColor[0] = mainColor;
+                interestsChart.update();
+
+                document.getElementById('dynamic-bg').style.backgroundImage = `url('${bgData[currentEra][activeSection]}')`;
+                targetAmp = 15;
+
+                els.forEach(id => document.getElementById(id).style.opacity = 1);
             }, 400); 
         }
 
-        // ========================================================
-        // 4. LIVE TELEMETRY SIMULATOR 
-        // ========================================================
-        const speedEl = document.getElementById('val-speed');
-        const rpmEl = document.getElementById('val-rpm');
-        const gearEl = document.getElementById('val-gear');
-        const gforceEl = document.getElementById('val-gforce');
-        let speed = 80, gear = 2, rpm = 4000, accelerating = true;
+        function renderRaceList(racesArray) {
+            const container = document.getElementById('race-list-container');
+            container.innerHTML = '';
+            racesArray.forEach((race, index) => {
+                const div = document.createElement('div');
+                div.className = `race-list-item ${index === 0 ? 'active' : ''}`;
+                div.innerHTML = `<span class="title-display d-block text-white">${race.event}</span><small class="tech-font text-white-50">${race.track}</small>`;
+                
+                div.onclick = function() {
+                    document.querySelectorAll('.race-list-item').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.getElementById('display-race-event').innerText = race.event;
+                    document.getElementById('display-race-track').innerText = race.track;
+                    document.getElementById('display-race-desc').innerText = race.desc;
+                    document.getElementById('display-race-link').href = "https://www.youtube.com/results?search_query=" + race.q;
+                };
+                container.appendChild(div);
+            });
+            if(container.firstChild) container.firstChild.click();
+        }
 
-        setInterval(() => {
-            if(Math.random() > 0.95) accelerating = !accelerating;
-            
-            if(accelerating) { speed += Math.floor(Math.random()*5); rpm += Math.floor(Math.random()*400); } 
-            else { speed -= Math.floor(Math.random()*8); rpm -= Math.floor(Math.random()*600); }
+        // SCROLL OBSERVER
+        const sections = document.querySelectorAll('.section-scroll');
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
-            if(speed > 330) speed = 330; if(speed < 60) speed = 60;
-            
-            if(rpm > 11500 && gear < 8) { gear++; rpm = 8500; } 
-            else if(rpm < 7000 && gear > 2) { gear--; rpm = 10000; }
-            if(rpm > 12500) rpm = 12500; if(rpm < 4000) rpm = 4000;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let id = entry.target.getAttribute('id');
+                    activeSection = id; 
+                    
+                    let newBg = bgData[currentEra][id];
+                    if(newBg) document.getElementById('dynamic-bg').style.backgroundImage = `url('${newBg}')`;
 
-            speedEl.innerText = speed; rpmEl.innerText = rpm;
-            gearEl.innerText = gear; gforceEl.innerText = (Math.random() * (speed > 250 ? 4 : 2) + 1).toFixed(1);
-        }, 100);
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        sections.forEach(sec => observer.observe(sec));
 
-        // ========================================================
-        // 5. 3D TILT CARDS LOGIC
-        // ========================================================
+        // 3D TILT
         document.querySelectorAll('.tilt-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                const rotateX = ((y - rect.height/2) / (rect.height/2)) * -10;
-                const rotateY = ((x - rect.width/2) / (rect.width/2)) * 10;
+                const rotateX = ((e.clientY - rect.top - rect.height/2) / (rect.height/2)) * -10;
+                const rotateY = ((e.clientX - rect.left - rect.width/2) / (rect.width/2)) * 10;
                 card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
             card.addEventListener('mouseleave', () => card.style.transform = `rotateX(0deg) rotateY(0deg)`);
         });
+
+        // STEERING WHEEL TELEMETRY
+        const wheelData = {
+            drs: { title: "DRAG REDUCTION SYSTEM", color: "#00ff00", desc: "Mengirim sinyal elektrik ke aktuator hidrolik untuk membuka bilah sayap belakang, mengurangi hambatan udara sebesar 20%.", tech: ">> SYSTEM: REAR_FLAP_ACTUATOR = OPEN\n>> OVERRIDE: COEFF_DRAG = MIN_CRITICAL\n>> TELEMETRY: AIR_VELOCITY = +12.4 KM/H", waveAmp: 35 },
+            magic: { title: "BRAKE MAGIC OVERRIDE", color: "#ff00ff", desc: "Memindahkan distribusi rem ke poros depan hingga 90% secara instan guna memanaskan suhu ban dengan cepat.", tech: ">> SYSTEM: BBW_CONTROLLER = FRONT_BYPASS\n>> OVERRIDE: BRAKE_BIAS = 90.5% FRONT\n>> THERMAL: FRONT_CORE_TEMP_TARGET = 100°C", waveAmp: 5 },
+            radio: { title: "SECURE FREQUENCY COMMS", color: "#ffff00", desc: "Membuka enkripsi saluran audio real-time antara kokpit driver dengan pusat pemantauan pit-wall.", tech: ">> SYSTEM: INTERCOM_MCU = LINK_ESTABLISHED\n>> FREQ: TX_RX_SECURE = 924.5 MHz\n>> AUDIO: NOISE_CANCELLATION = MAX", waveAmp: 20 },
+            strat: { title: "ENGINE STRATEGY POWER", color: "#00e5df", desc: "Mengubah kurva pembakaran bahan bakar dan manajemen pelepasan energi hibrida MGU-K untuk mode menyalip.", tech: ">> SYSTEM: ECU_FUEL_INJECTION = RICH\n>> HYBRID: MGU_K_MAP = DEPLOY_MAX_OVERTAKE\n>> BATTERY: DRAIN_RATE = peak_discharge", waveAmp: 40 },
+            pit: { title: "PIT LANE SPEED LIMITER", color: "#ff8700", desc: "Membatazi pasokan daya mekatronika mesin secara paksa. Menahan laju poros engkol pada batas aman regulasi sirkuit yaitu maksimal 80 KM/H.", tech: ">> SYSTEM: CRANKSHAFT_LIMITER = ENGAGED\n>> DETENT: IGNITION_TIMING = DELAYED\n>> OUTPUT: TRK_SPEED_CAP = 80 KM/H", waveAmp: 10 },
+            neutral: { title: "NEUTRAL ENGAGEMENT SYSTEM", color: "#ff0000", desc: "Memutuskan kopling secara mekatronika dari sistem transmisi tanpa perlu menarik paddle fisik.", tech: ">> SYSTEM: GEARBOX_ECU = DECOUPLING | ACTIVE_GEAR = 0", waveAmp: 2 }
+        };
+
+        function showLog(btnId) {
+            document.querySelectorAll('.wheel-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.btn-${btnId}`).classList.add('active');
+
+            const data = wheelData[btnId];
+            const titleEl = document.getElementById('log-title');
+            const descEl = document.getElementById('log-desc');
+            const techEl = document.getElementById('log-tech');
+
+            titleEl.innerText = data.title;
+            titleEl.style.color = data.color;
+            titleEl.style.textShadow = `0 0 15px ${data.color}`;
+            descEl.innerText = data.desc;
+            techEl.innerText = data.tech;
+            techEl.style.color = data.color;
+            
+            targetAmp = data.waveAmp;
+        }
+
+        const ledBulbs = document.querySelectorAll('#rpm-leds .led-bulb');
+        const scrRpm = document.getElementById('screen-rpm-val');
+        const scrSpeed = document.getElementById('screen-speed-val');
+        
+        let canvas = document.getElementById('liveWaveCanvas');
+        let ctx = canvas.getContext('2d');
+        let waveX = 0;
+        let currentAmp = 15;
+        let targetAmp = 15;
+
+        setInterval(() => {
+            let maxRpm = eraData[currentEra].maxRpm;
+            let currentRpm = Math.floor(Math.random() * 1200) + (maxRpm - 1800);
+            let currentSpeed = Math.floor(Math.random() * 8) + 310;
+
+            scrRpm.innerText = currentRpm;
+            scrSpeed.innerText = currentSpeed + " KM/H";
+
+            let rpmRatio = currentRpm / maxRpm;
+            let activeLeds = Math.floor(rpmRatio * ledBulbs.length);
+
+            ledBulbs.forEach((led, i) => {
+                if (i < activeLeds) {
+                    if (i < 3) { led.style.background = '#00ff00'; led.style.boxShadow = '0 0 10px #00ff00'; }
+                    else if (i < 6) { led.style.background = '#ff0000'; led.style.boxShadow = '0 0 10px #ff0000'; }
+                    else { led.style.background = '#0000ff'; led.style.boxShadow = '0 0 10px #0000ff'; }
+                } else {
+                    led.style.background = '#222';
+                    led.style.boxShadow = 'none';
+                }
+            });
+
+            if (rpmRatio > 0.95) {
+                ledBulbs.forEach(led => { led.style.background = '#fff'; led.style.boxShadow = '0 0 15px #fff'; });
+            }
+        }, 100);
+
+        function initLiveOscilloscope() {
+            function drawWave() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+                ctx.strokeStyle = currentEra === 'ferrari' ? '#ff2800' : (currentEra === 'mclaren' ? '#ff8700' : '#00e5df');
+                ctx.lineWidth = 2;
+                
+                currentAmp += (targetAmp - currentAmp) * 0.1;
+
+                for (let i = 0; i < canvas.width; i++) {
+                    let y = canvas.height / 2 + Math.sin(i * 0.05 + waveX) * currentAmp + (Math.random() * 4 - 2);
+                    if (i === 0) ctx.moveTo(i, y);
+                    else ctx.lineTo(i, y);
+                }
+                
+                ctx.stroke();
+                waveX += 0.25;
+                requestAnimationFrame(drawWave);
+            }
+            drawWave();
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('formName').value;
+            alert(`DATA PACKET TRANSMITTED SUCCESSFULLY!\nCallsign "${name}" has been registered into 'secure_uplink_messages' table.`);
+            document.getElementById('uplinkForm').reset();
+        }
     </script>
 </body>
 </html>
